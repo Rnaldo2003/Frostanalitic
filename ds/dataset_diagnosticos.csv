@@ -1,0 +1,601 @@
+sesion_id,equipo,equipo_id,sintoma,falla_diagnosticada_id,falla_correcta_id,fue_correcto,probabilidad,nivel_usuario,fecha
+1,Refrigerador,1,hielo_puerta_mala,10,10,1,77,normal,2024-02-10 20:00:00
+2,Aire Acondicionado,3,filtros_limpios_presion_normal,3,3,1,88,normal,2024-07-05 09:00:00
+3,Congelador,2,comp_no,4,4,1,80,normal,2024-12-15 17:00:00
+4,Refrigerador,1,ruido_burbujeo,1,1,1,73,normal,2024-05-05 09:00:00
+5,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,tecnico,2024-12-18 15:00:00
+6,Aire Acondicionado,3,gotea_antigua,9,9,1,94,tecnico,2024-04-27 20:00:00
+7,Refrigerador,1,gotea,9,9,1,89,normal,2024-04-18 16:00:00
+8,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-11-25 14:00:00
+9,Aire Acondicionado,3,exterior_no_control_no,12,12,1,87,tecnico,2024-10-02 11:00:00
+10,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,normal,2024-04-22 09:00:00
+11,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,normal,2024-02-26 09:00:00
+12,Aire Acondicionado,3,gotea_nueva,9,9,1,72,normal,2024-11-01 14:00:00
+13,Cuarto Frio,5,cicla_hielo_si,1,11,0,87,normal,2024-02-28 17:00:00
+14,Cuarto Frio,5,cicla_hielo_si,11,11,1,87,normal,2024-05-30 13:00:00
+15,Aire Acondicionado,3,ruido_interior,18,18,1,92,tecnico,2025-01-03 11:00:00
+16,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,normal,2024-11-16 11:00:00
+17,Cuarto Frio,5,consumo_alto_cf,8,8,1,86,normal,2024-03-23 15:00:00
+18,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,normal,2024-02-27 12:00:00
+19,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,tecnico,2024-02-10 08:00:00
+20,Enfriador Comercial,4,comp_func_cond_limpio,6,1,0,87,normal,2024-08-31 15:00:00
+21,Aire Acondicionado,3,exterior_no_control_no,12,12,1,87,normal,2024-04-18 15:00:00
+22,Aire Acondicionado,3,exterior_no_control_no,12,12,1,87,normal,2024-07-10 14:00:00
+23,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,normal,2024-06-22 07:00:00
+24,Cuarto Frio,5,consumo_alto_cf,8,8,1,86,normal,2024-02-06 18:00:00
+25,Refrigerador,1,escarcha_poca_burbujeo_no,2,2,1,78,normal,2024-06-18 08:00:00
+26,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,normal,2024-10-03 09:00:00
+27,Cuarto Frio,5,consumo_alto_cf,8,8,1,86,tecnico,2024-07-27 10:00:00
+28,Refrigerador,1,escarcha_mucha_ventilador_no,6,6,1,73,normal,2024-07-29 14:00:00
+29,Refrigerador,1,hielo_puerta_mala,10,10,1,77,normal,2024-02-01 13:00:00
+30,Congelador,2,comp_func_temp_0_10,1,1,1,76,normal,2024-08-17 09:00:00
+31,Enfriador Comercial,4,comp_func_cond_sucio,8,8,1,92,normal,2024-02-08 14:00:00
+32,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,tecnico,2024-01-08 08:00:00
+33,Aire Acondicionado,3,filtros_sucios,13,13,1,97,normal,2024-07-24 07:00:00
+34,Aire Acondicionado,3,gotea_nueva,9,9,1,72,normal,2024-08-20 11:00:00
+35,Enfriador Comercial,4,puertas_mal,17,10,0,95,normal,2024-05-31 10:00:00
+36,Refrigerador,1,ruido_burbujeo,3,1,0,73,tecnico,2024-01-30 07:00:00
+37,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,tecnico,2024-03-21 07:00:00
+38,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,normal,2024-02-04 17:00:00
+39,Aire Acondicionado,3,gotea_nueva,9,9,1,72,tecnico,2024-05-06 16:00:00
+40,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,normal,2024-10-25 16:00:00
+41,Cuarto Frio,5,cicla_hielo_si,7,11,0,87,normal,2024-06-09 10:00:00
+42,Congelador,2,hielo_evaporador,11,11,1,74,normal,2024-08-22 12:00:00
+43,Refrigerador,1,escarcha_mucha_ventilador_si,5,5,1,88,tecnico,2024-02-21 08:00:00
+44,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,normal,2024-06-27 08:00:00
+45,Aire Acondicionado,3,gotea_antigua,9,9,1,94,normal,2024-10-05 18:00:00
+46,Congelador,2,hielo_bordes,18,10,0,74,normal,2024-10-10 11:00:00
+47,Refrigerador,1,escarcha_poca_burbujeo_si,1,1,1,79,tecnico,2025-01-15 15:00:00
+48,Aire Acondicionado,3,exterior_no_control_no,12,12,1,87,normal,2024-06-24 10:00:00
+49,Congelador,2,hielo_bordes,10,10,1,74,tecnico,2024-01-27 08:00:00
+50,Enfriador Comercial,4,comp_no_ec,3,3,1,90,normal,2024-03-07 17:00:00
+51,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-08-06 15:00:00
+52,Refrigerador,1,escarcha_mucha_ventilador_no,6,6,1,73,tecnico,2024-03-17 15:00:00
+53,Refrigerador,1,compresor_no_voltaje_si,3,3,1,89,normal,2024-03-06 07:00:00
+54,Congelador,2,comp_no,2,4,0,80,tecnico,2024-04-17 17:00:00
+55,Aire Acondicionado,3,filtros_limpios_presion_normal,3,3,1,88,normal,2024-07-27 16:00:00
+56,Aire Acondicionado,3,exterior_no_control_si,7,4,0,78,tecnico,2024-01-13 09:00:00
+57,Congelador,2,hielo_evaporador,8,11,0,74,normal,2024-12-25 08:00:00
+58,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,normal,2024-08-23 12:00:00
+59,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-07-23 12:00:00
+60,Congelador,2,comp_func_temp_0_10,10,1,0,76,normal,2024-09-17 13:00:00
+61,Cuarto Frio,5,cicla_hielo_si,4,11,0,87,tecnico,2024-05-13 09:00:00
+62,Cuarto Frio,5,cicla_hielo_si,11,11,1,87,normal,2024-06-25 18:00:00
+63,Congelador,2,hielo_evaporador,11,11,1,74,normal,2024-07-16 16:00:00
+64,Aire Acondicionado,3,exterior_no_control_no,12,12,1,87,normal,2024-09-23 19:00:00
+65,Cuarto Frio,5,alarmas,15,15,1,90,tecnico,2024-12-09 10:00:00
+66,Congelador,2,hielo_evaporador,11,11,1,74,normal,2024-06-18 16:00:00
+67,Congelador,2,consumo_alto,8,8,1,93,tecnico,2024-06-02 15:00:00
+68,Congelador,2,consumo_alto,8,8,1,93,normal,2024-05-31 15:00:00
+69,Aire Acondicionado,3,exterior_no_control_si,4,4,1,78,tecnico,2024-12-12 18:00:00
+70,Aire Acondicionado,3,codigo_error,12,12,1,81,normal,2024-01-01 11:00:00
+71,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-12-01 12:00:00
+72,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,normal,2024-08-30 19:00:00
+73,Aire Acondicionado,3,filtros_limpios_presion_normal,3,3,1,88,normal,2024-11-13 12:00:00
+74,Refrigerador,1,gotea,9,9,1,89,normal,2024-04-11 09:00:00
+75,Refrigerador,1,escarcha_mucha_ventilador_si,5,5,1,88,normal,2025-01-28 08:00:00
+76,Enfriador Comercial,4,cristales_resist_si,7,16,0,85,tecnico,2024-07-15 14:00:00
+77,Enfriador Comercial,4,comp_func_cond_sucio,8,8,1,92,normal,2025-01-19 20:00:00
+78,Refrigerador,1,gotea,9,9,1,89,normal,2024-12-22 15:00:00
+79,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,tecnico,2024-03-03 14:00:00
+80,Aire Acondicionado,3,ruido_interior,18,18,1,92,tecnico,2024-10-31 12:00:00
+81,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,tecnico,2024-08-06 20:00:00
+82,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,tecnico,2024-08-31 14:00:00
+83,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2025-02-02 15:00:00
+84,Enfriador Comercial,4,puertas_mal,10,10,1,95,normal,2024-12-31 11:00:00
+85,Aire Acondicionado,3,exterior_no_control_no,12,12,1,87,tecnico,2024-02-11 09:00:00
+86,Aire Acondicionado,3,exterior_no_control_si,4,4,1,78,normal,2024-04-19 08:00:00
+87,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,normal,2024-02-01 10:00:00
+88,Enfriador Comercial,4,cristales_resist_si,1,16,0,85,tecnico,2025-01-26 16:00:00
+89,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,normal,2025-01-20 13:00:00
+90,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,normal,2024-11-04 10:00:00
+91,Enfriador Comercial,4,comp_func_cond_sucio,8,8,1,92,normal,2024-07-18 12:00:00
+92,Enfriador Comercial,4,puertas_mal,10,10,1,95,normal,2024-03-06 16:00:00
+93,Cuarto Frio,5,trabaja_sin_parar_filt_si,1,14,0,86,normal,2024-08-07 09:00:00
+94,Enfriador Comercial,4,comp_func_cond_sucio,8,8,1,92,normal,2024-04-18 14:00:00
+95,Congelador,2,comp_no,4,4,1,80,normal,2025-01-20 20:00:00
+96,Enfriador Comercial,4,comp_no_ec,3,3,1,90,normal,2025-01-18 15:00:00
+97,Refrigerador,1,compresor_no_voltaje_si,3,3,1,89,normal,2024-11-29 07:00:00
+98,Refrigerador,1,escarcha_poca_burbujeo_no,2,2,1,78,normal,2024-03-19 10:00:00
+99,Aire Acondicionado,3,ruido_interior,18,18,1,92,normal,2024-04-21 14:00:00
+100,Congelador,2,comp_no,4,4,1,80,normal,2025-01-17 18:00:00
+101,Refrigerador,1,gotea,9,9,1,89,tecnico,2024-02-25 16:00:00
+102,Refrigerador,1,compresor_no_clic_si,4,4,1,90,tecnico,2024-07-11 13:00:00
+103,Aire Acondicionado,3,filtros_limpios_presion_normal,3,3,1,88,tecnico,2024-05-04 08:00:00
+104,Congelador,2,consumo_alto,8,8,1,93,normal,2024-10-16 19:00:00
+105,Refrigerador,1,compresor_no_voltaje_si,3,3,1,89,normal,2024-02-05 15:00:00
+106,Congelador,2,comp_func_temp_0_10,17,1,0,76,normal,2024-07-04 17:00:00
+107,Enfriador Comercial,4,puertas_mal,10,10,1,95,normal,2024-09-24 17:00:00
+108,Congelador,2,hielo_bordes,17,10,0,74,normal,2025-01-09 16:00:00
+109,Congelador,2,comp_no,3,4,0,80,normal,2024-08-18 10:00:00
+110,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,normal,2024-01-15 14:00:00
+111,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-05-12 12:00:00
+112,Congelador,2,hielo_bordes,10,10,1,74,normal,2024-01-06 15:00:00
+113,Aire Acondicionado,3,filtros_limpios_presion_normal,3,3,1,88,normal,2024-10-11 19:00:00
+114,Aire Acondicionado,3,ruido_interior,18,18,1,92,normal,2024-01-09 08:00:00
+115,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-12-05 16:00:00
+116,Congelador,2,hielo_evaporador,11,11,1,74,normal,2025-01-16 15:00:00
+117,Congelador,2,comp_no,4,4,1,80,normal,2024-05-08 10:00:00
+118,Refrigerador,1,hielo_puerta_bien,11,11,1,85,normal,2024-10-01 19:00:00
+119,Aire Acondicionado,3,exterior_no_control_si,4,4,1,78,normal,2025-01-05 16:00:00
+120,Cuarto Frio,5,consumo_alto_cf,8,8,1,86,normal,2024-04-09 11:00:00
+121,Aire Acondicionado,3,gotea_antigua,9,9,1,94,normal,2024-09-30 09:00:00
+122,Congelador,2,comp_func_temp_0_10,11,1,0,76,normal,2024-03-05 17:00:00
+123,Enfriador Comercial,4,comp_func_cond_limpio,11,1,0,87,normal,2024-08-13 12:00:00
+124,Aire Acondicionado,3,filtros_limpios_presion_baja,1,1,1,77,tecnico,2024-02-28 20:00:00
+125,Refrigerador,1,compresor_no_voltaje_no,17,17,1,94,normal,2024-12-17 07:00:00
+126,Aire Acondicionado,3,filtros_sucios,13,13,1,97,tecnico,2024-02-13 10:00:00
+127,Refrigerador,1,ruido_zumbido,18,18,1,83,normal,2024-11-12 10:00:00
+128,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,normal,2024-10-28 13:00:00
+129,Congelador,2,hielo_bordes,10,10,1,74,normal,2025-01-13 08:00:00
+130,Aire Acondicionado,3,exterior_no_control_si,4,4,1,78,normal,2024-05-02 09:00:00
+131,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,normal,2024-12-18 16:00:00
+132,Enfriador Comercial,4,comp_no_ec,3,3,1,90,normal,2024-05-24 18:00:00
+133,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,tecnico,2024-11-16 16:00:00
+134,Aire Acondicionado,3,gotea_nueva,9,9,1,72,normal,2024-03-17 11:00:00
+135,Aire Acondicionado,3,filtros_limpios_presion_normal,3,3,1,88,tecnico,2024-10-31 18:00:00
+136,Cuarto Frio,5,cicla_hielo_si,11,11,1,87,normal,2024-06-04 18:00:00
+137,Enfriador Comercial,4,comp_no_ec,3,3,1,90,normal,2024-02-11 16:00:00
+138,Refrigerador,1,compresor_no_voltaje_no,17,17,1,94,normal,2024-01-14 08:00:00
+139,Aire Acondicionado,3,codigo_error,12,12,1,81,normal,2025-01-26 17:00:00
+140,Congelador,2,hielo_bordes,10,10,1,74,tecnico,2024-08-28 15:00:00
+141,Enfriador Comercial,4,comp_no_ec,3,3,1,90,normal,2024-11-21 20:00:00
+142,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,normal,2024-06-13 17:00:00
+143,Refrigerador,1,escarcha_poca_burbujeo_si,1,1,1,79,normal,2024-05-27 17:00:00
+144,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,normal,2024-05-09 12:00:00
+145,Refrigerador,1,gotea,9,9,1,89,normal,2024-01-01 17:00:00
+146,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,normal,2024-07-04 16:00:00
+147,Enfriador Comercial,4,puertas_mal,10,10,1,95,normal,2024-05-16 15:00:00
+148,Aire Acondicionado,3,exterior_no_control_no,12,12,1,87,normal,2024-03-03 07:00:00
+149,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,normal,2024-01-08 15:00:00
+150,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,tecnico,2024-02-28 14:00:00
+151,Refrigerador,1,hielo_puerta_mala,17,10,0,77,tecnico,2024-05-29 15:00:00
+152,Congelador,2,hielo_evaporador,17,11,0,74,normal,2024-10-09 09:00:00
+153,Enfriador Comercial,4,comp_func_cond_sucio,18,8,0,92,tecnico,2024-03-10 20:00:00
+154,Refrigerador,1,compresor_no_clic_si,4,4,1,90,tecnico,2024-06-23 19:00:00
+155,Cuarto Frio,5,cicla_hielo_si,11,11,1,87,normal,2024-06-01 20:00:00
+156,Cuarto Frio,5,consumo_alto_cf,17,8,0,86,tecnico,2024-08-16 15:00:00
+157,Enfriador Comercial,4,comp_no_ec,3,3,1,90,tecnico,2024-07-12 14:00:00
+158,Congelador,2,comp_func_temp_mayor_0,9,3,0,96,normal,2024-04-29 20:00:00
+159,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,normal,2024-07-14 13:00:00
+160,Aire Acondicionado,3,ruido_interior,5,18,0,92,normal,2024-10-29 12:00:00
+161,Refrigerador,1,ruido_vibracion,3,3,1,74,tecnico,2024-01-08 18:00:00
+162,Aire Acondicionado,3,gotea_nueva,5,9,0,72,normal,2025-02-04 11:00:00
+163,Congelador,2,hielo_bordes,10,10,1,74,normal,2024-06-17 20:00:00
+164,Cuarto Frio,5,cicla_hielo_no,17,1,0,94,tecnico,2024-01-19 16:00:00
+165,Refrigerador,1,escarcha_poca_burbujeo_no,2,2,1,78,tecnico,2024-04-26 18:00:00
+166,Refrigerador,1,compresor_no_voltaje_no,4,17,0,94,normal,2024-12-21 11:00:00
+167,Refrigerador,1,escarcha_mucha_ventilador_si,5,5,1,88,normal,2024-07-02 12:00:00
+168,Enfriador Comercial,4,comp_func_cond_sucio,8,8,1,92,normal,2024-12-15 19:00:00
+169,Aire Acondicionado,3,filtros_sucios,13,13,1,97,normal,2024-07-14 16:00:00
+170,Aire Acondicionado,3,ruido_interior,18,18,1,92,normal,2024-08-24 17:00:00
+171,Congelador,2,hielo_evaporador,11,11,1,74,normal,2024-08-26 11:00:00
+172,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,tecnico,2024-10-27 11:00:00
+173,Enfriador Comercial,4,puertas_mal,10,10,1,95,tecnico,2024-04-11 13:00:00
+174,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,normal,2024-10-21 11:00:00
+175,Congelador,2,comp_func_temp_0_10,14,1,0,76,normal,2024-10-16 20:00:00
+176,Refrigerador,1,ruido_burbujeo,11,1,0,73,tecnico,2024-04-27 16:00:00
+177,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-12-13 19:00:00
+178,Aire Acondicionado,3,filtros_limpios_presion_normal,2,3,0,88,normal,2024-08-13 07:00:00
+179,Cuarto Frio,5,cicla_hielo_si,11,11,1,87,normal,2024-05-31 12:00:00
+180,Enfriador Comercial,4,comp_func_cond_sucio,8,8,1,92,tecnico,2024-07-06 15:00:00
+181,Cuarto Frio,5,cicla_hielo_si,11,11,1,87,normal,2024-09-03 19:00:00
+182,Congelador,2,consumo_alto,8,8,1,93,tecnico,2024-08-27 08:00:00
+183,Aire Acondicionado,3,exterior_no_control_si,14,4,0,78,tecnico,2024-10-12 12:00:00
+184,Refrigerador,1,gotea,9,9,1,89,normal,2024-03-04 14:00:00
+185,Congelador,2,consumo_alto,8,8,1,93,normal,2024-07-14 20:00:00
+186,Congelador,2,comp_func_temp_0_10,1,1,1,76,normal,2024-11-13 15:00:00
+187,Congelador,2,hielo_bordes,10,10,1,74,normal,2024-08-25 18:00:00
+188,Congelador,2,consumo_alto,8,8,1,93,normal,2024-01-20 11:00:00
+189,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,tecnico,2024-03-10 13:00:00
+190,Enfriador Comercial,4,comp_no_ec,3,3,1,90,tecnico,2024-10-03 13:00:00
+191,Cuarto Frio,5,alarmas,15,15,1,90,tecnico,2024-12-01 08:00:00
+192,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,tecnico,2024-01-17 18:00:00
+193,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,tecnico,2024-07-04 08:00:00
+194,Congelador,2,hielo_bordes,13,10,0,74,normal,2024-05-21 10:00:00
+195,Refrigerador,1,ruido_vibracion,3,3,1,74,normal,2024-11-23 16:00:00
+196,Refrigerador,1,escarcha_mucha_ventilador_si,5,5,1,88,normal,2024-03-05 19:00:00
+197,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,tecnico,2024-04-16 16:00:00
+198,Aire Acondicionado,3,exterior_no_control_si,4,4,1,78,normal,2024-11-01 07:00:00
+199,Congelador,2,comp_func_temp_mayor_0,10,3,0,96,tecnico,2024-02-26 17:00:00
+200,Refrigerador,1,escarcha_poca_burbujeo_si,1,1,1,79,tecnico,2024-05-01 16:00:00
+201,Congelador,2,comp_func_temp_0_10,1,1,1,76,normal,2025-01-14 13:00:00
+202,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,normal,2025-02-02 12:00:00
+203,Cuarto Frio,5,consumo_alto_cf,8,8,1,86,normal,2024-11-10 07:00:00
+204,Cuarto Frio,5,cicla_hielo_si,11,11,1,87,tecnico,2024-02-01 14:00:00
+205,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,normal,2024-08-15 08:00:00
+206,Refrigerador,1,compresor_no_voltaje_si,3,3,1,89,normal,2024-05-20 16:00:00
+207,Cuarto Frio,5,consumo_alto_cf,8,8,1,86,normal,2024-11-01 15:00:00
+208,Congelador,2,hielo_evaporador,11,11,1,74,normal,2024-12-25 08:00:00
+209,Cuarto Frio,5,alarmas,15,15,1,90,normal,2024-04-26 13:00:00
+210,Congelador,2,hielo_evaporador,11,11,1,74,tecnico,2024-06-09 13:00:00
+211,Congelador,2,consumo_alto,8,8,1,93,tecnico,2024-12-17 14:00:00
+212,Refrigerador,1,escarcha_mucha_ventilador_no,3,6,0,73,normal,2025-01-16 18:00:00
+213,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-10-14 15:00:00
+214,Congelador,2,consumo_alto,8,8,1,93,normal,2024-12-06 19:00:00
+215,Enfriador Comercial,4,puertas_mal,10,10,1,95,normal,2024-06-08 12:00:00
+216,Refrigerador,1,ruido_burbujeo,1,1,1,73,normal,2024-09-03 10:00:00
+217,Refrigerador,1,compresor_no_voltaje_si,3,3,1,89,normal,2025-01-25 11:00:00
+218,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,tecnico,2025-01-27 20:00:00
+219,Cuarto Frio,5,consumo_alto_cf,8,8,1,86,normal,2024-11-07 17:00:00
+220,Congelador,2,comp_func_temp_0_10,1,1,1,76,tecnico,2024-06-07 12:00:00
+221,Congelador,2,comp_func_temp_0_10,1,1,1,76,normal,2024-12-02 13:00:00
+222,Refrigerador,1,escarcha_poca_burbujeo_si,1,1,1,79,tecnico,2024-02-16 18:00:00
+223,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,normal,2024-03-21 12:00:00
+224,Congelador,2,consumo_alto,8,8,1,93,tecnico,2024-11-01 08:00:00
+225,Refrigerador,1,escarcha_poca_burbujeo_si,1,1,1,79,normal,2024-12-11 08:00:00
+226,Congelador,2,hielo_evaporador,11,11,1,74,normal,2024-08-14 13:00:00
+227,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-08-08 08:00:00
+228,Congelador,2,consumo_alto,8,8,1,93,normal,2024-12-07 11:00:00
+229,Refrigerador,1,escarcha_poca_burbujeo_no,2,2,1,78,normal,2024-01-04 10:00:00
+230,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,tecnico,2024-05-28 12:00:00
+231,Refrigerador,1,escarcha_mucha_ventilador_si,5,5,1,88,normal,2024-03-07 13:00:00
+232,Cuarto Frio,5,alarmas,15,15,1,90,normal,2024-12-08 19:00:00
+233,Congelador,2,comp_func_temp_0_10,1,1,1,76,tecnico,2024-08-11 07:00:00
+234,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,normal,2024-10-20 13:00:00
+235,Enfriador Comercial,4,comp_no_ec,3,3,1,90,normal,2024-06-15 09:00:00
+236,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,tecnico,2024-02-15 13:00:00
+237,Refrigerador,1,escarcha_poca_burbujeo_no,2,2,1,78,normal,2024-02-10 13:00:00
+238,Congelador,2,consumo_alto,8,8,1,93,normal,2024-03-27 08:00:00
+239,Cuarto Frio,5,alarmas,15,15,1,90,normal,2025-02-01 12:00:00
+240,Congelador,2,consumo_alto,5,8,0,93,normal,2024-03-15 11:00:00
+241,Aire Acondicionado,3,filtros_sucios,13,13,1,97,tecnico,2024-12-01 08:00:00
+242,Aire Acondicionado,3,ruido_interior,18,18,1,92,normal,2024-10-23 14:00:00
+243,Cuarto Frio,5,alarmas,15,15,1,90,normal,2024-11-17 12:00:00
+244,Aire Acondicionado,3,ruido_interior,18,18,1,92,normal,2024-06-04 19:00:00
+245,Congelador,2,hielo_bordes,10,10,1,74,normal,2024-06-07 14:00:00
+246,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,tecnico,2024-02-09 17:00:00
+247,Refrigerador,1,ruido_burbujeo,1,1,1,73,normal,2024-10-24 15:00:00
+248,Refrigerador,1,ruido_vibracion,8,3,0,74,normal,2024-08-31 15:00:00
+249,Aire Acondicionado,3,filtros_limpios_presion_baja,1,1,1,77,tecnico,2024-06-24 18:00:00
+250,Refrigerador,1,ruido_zumbido,18,18,1,83,normal,2024-12-28 14:00:00
+251,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,normal,2024-07-09 11:00:00
+252,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,normal,2024-01-27 19:00:00
+253,Congelador,2,comp_func_temp_0_10,1,1,1,76,normal,2024-07-16 11:00:00
+254,Congelador,2,consumo_alto,8,8,1,93,tecnico,2024-11-04 20:00:00
+255,Aire Acondicionado,3,gotea_antigua,9,9,1,94,normal,2024-06-28 11:00:00
+256,Enfriador Comercial,4,comp_func_cond_sucio,8,8,1,92,tecnico,2024-06-07 15:00:00
+257,Enfriador Comercial,4,puertas_mal,10,10,1,95,tecnico,2024-12-09 18:00:00
+258,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,normal,2024-07-04 07:00:00
+259,Congelador,2,comp_no,4,4,1,80,normal,2025-01-27 14:00:00
+260,Aire Acondicionado,3,exterior_no_control_si,6,4,0,78,normal,2024-02-21 15:00:00
+261,Cuarto Frio,5,alarmas,15,15,1,90,normal,2024-06-21 19:00:00
+262,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,normal,2024-04-02 20:00:00
+263,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,normal,2024-07-05 17:00:00
+264,Aire Acondicionado,3,ruido_interior,18,18,1,92,tecnico,2024-08-17 10:00:00
+265,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,tecnico,2024-08-28 20:00:00
+266,Aire Acondicionado,3,gotea_antigua,9,9,1,94,normal,2024-08-13 14:00:00
+267,Congelador,2,hielo_evaporador,11,11,1,74,normal,2024-03-23 20:00:00
+268,Aire Acondicionado,3,codigo_error,12,12,1,81,normal,2024-11-24 14:00:00
+269,Congelador,2,hielo_bordes,18,10,0,74,tecnico,2024-05-25 08:00:00
+270,Aire Acondicionado,3,exterior_no_control_no,12,12,1,87,normal,2024-08-11 08:00:00
+271,Aire Acondicionado,3,ruido_interior,18,18,1,92,tecnico,2024-07-31 07:00:00
+272,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,normal,2024-02-11 12:00:00
+273,Aire Acondicionado,3,filtros_limpios_presion_baja,1,1,1,77,normal,2024-12-31 17:00:00
+274,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-08-29 18:00:00
+275,Aire Acondicionado,3,ruido_interior,18,18,1,92,normal,2024-02-10 07:00:00
+276,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2025-01-07 16:00:00
+277,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,normal,2024-06-03 08:00:00
+278,Refrigerador,1,escarcha_poca_burbujeo_no,2,2,1,78,tecnico,2024-08-22 08:00:00
+279,Refrigerador,1,ruido_vibracion,3,3,1,74,normal,2024-09-20 16:00:00
+280,Aire Acondicionado,3,filtros_sucios,13,13,1,97,normal,2024-06-29 10:00:00
+281,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,normal,2024-09-25 12:00:00
+282,Refrigerador,1,ruido_zumbido,18,18,1,83,tecnico,2024-09-16 15:00:00
+283,Refrigerador,1,compresor_no_voltaje_no,17,17,1,94,normal,2024-07-17 12:00:00
+284,Congelador,2,consumo_alto,8,8,1,93,tecnico,2024-06-25 10:00:00
+285,Refrigerador,1,gotea,9,9,1,89,tecnico,2024-03-09 07:00:00
+286,Congelador,2,hielo_bordes,10,10,1,74,normal,2025-02-02 17:00:00
+287,Enfriador Comercial,4,puertas_mal,10,10,1,95,normal,2024-03-10 08:00:00
+288,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,normal,2024-04-12 07:00:00
+289,Congelador,2,comp_no,4,4,1,80,tecnico,2024-10-05 14:00:00
+290,Congelador,2,comp_func_temp_0_10,1,1,1,76,normal,2024-07-01 20:00:00
+291,Refrigerador,1,hielo_puerta_mala,10,10,1,77,normal,2024-07-07 13:00:00
+292,Enfriador Comercial,4,puertas_mal,10,10,1,95,tecnico,2024-06-22 09:00:00
+293,Enfriador Comercial,4,puertas_mal,10,10,1,95,tecnico,2024-09-22 11:00:00
+294,Refrigerador,1,hielo_puerta_bien,11,11,1,85,normal,2024-04-02 15:00:00
+295,Congelador,2,comp_no,4,4,1,80,normal,2024-05-31 11:00:00
+296,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,normal,2024-08-15 12:00:00
+297,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,tecnico,2024-11-10 13:00:00
+298,Congelador,2,consumo_alto,2,8,0,93,normal,2024-11-22 13:00:00
+299,Congelador,2,hielo_bordes,6,10,0,74,tecnico,2024-03-14 20:00:00
+300,Cuarto Frio,5,alarmas,15,15,1,90,normal,2024-02-04 10:00:00
+301,Congelador,2,comp_no,4,4,1,80,normal,2024-11-05 09:00:00
+302,Enfriador Comercial,4,comp_no_ec,3,3,1,90,tecnico,2024-10-20 09:00:00
+303,Cuarto Frio,5,cicla_hielo_si,11,11,1,87,normal,2024-05-07 08:00:00
+304,Refrigerador,1,hielo_puerta_bien,11,11,1,85,normal,2024-10-14 08:00:00
+305,Congelador,2,comp_no,4,4,1,80,normal,2024-11-09 11:00:00
+306,Enfriador Comercial,4,comp_func_cond_sucio,8,8,1,92,tecnico,2024-08-19 09:00:00
+307,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,tecnico,2024-06-12 17:00:00
+308,Congelador,2,consumo_alto,8,8,1,93,normal,2024-06-02 20:00:00
+309,Aire Acondicionado,3,filtros_sucios,13,13,1,97,normal,2024-03-03 10:00:00
+310,Aire Acondicionado,3,exterior_no_control_si,1,4,0,78,normal,2024-10-20 12:00:00
+311,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,tecnico,2024-02-03 11:00:00
+312,Enfriador Comercial,4,puertas_mal,10,10,1,95,normal,2025-01-28 13:00:00
+313,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,normal,2024-02-07 14:00:00
+314,Enfriador Comercial,4,puertas_mal,10,10,1,95,normal,2025-02-03 15:00:00
+315,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,normal,2024-09-14 20:00:00
+316,Refrigerador,1,escarcha_mucha_ventilador_no,6,6,1,73,normal,2024-03-23 12:00:00
+317,Aire Acondicionado,3,gotea_antigua,18,9,0,94,tecnico,2024-02-10 11:00:00
+318,Aire Acondicionado,3,ruido_exterior,3,3,1,89,normal,2024-11-10 15:00:00
+319,Refrigerador,1,ruido_zumbido,18,18,1,83,normal,2024-10-24 09:00:00
+320,Aire Acondicionado,3,codigo_error,12,12,1,81,normal,2024-10-15 07:00:00
+321,Refrigerador,1,escarcha_mucha_ventilador_no,6,6,1,73,normal,2024-10-22 11:00:00
+322,Aire Acondicionado,3,codigo_error,12,12,1,81,normal,2024-09-11 17:00:00
+323,Cuarto Frio,5,cicla_hielo_si,11,11,1,87,normal,2024-05-05 19:00:00
+324,Enfriador Comercial,4,comp_no_ec,3,3,1,90,normal,2024-03-21 14:00:00
+325,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,normal,2024-03-14 12:00:00
+326,Congelador,2,consumo_alto,13,8,0,93,tecnico,2024-03-07 19:00:00
+327,Congelador,2,hielo_bordes,10,10,1,74,normal,2024-08-26 08:00:00
+328,Congelador,2,hielo_evaporador,11,11,1,74,normal,2024-05-28 13:00:00
+329,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,tecnico,2024-03-22 20:00:00
+330,Congelador,2,hielo_bordes,10,10,1,74,normal,2024-03-22 14:00:00
+331,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,normal,2024-01-12 08:00:00
+332,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,normal,2024-10-25 12:00:00
+333,Refrigerador,1,escarcha_mucha_ventilador_si,5,5,1,88,normal,2024-11-30 17:00:00
+334,Enfriador Comercial,4,comp_no_ec,3,3,1,90,tecnico,2024-08-08 09:00:00
+335,Congelador,2,consumo_alto,8,8,1,93,normal,2024-01-24 13:00:00
+336,Refrigerador,1,ruido_burbujeo,1,1,1,73,normal,2024-05-27 08:00:00
+337,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,normal,2024-11-15 17:00:00
+338,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,normal,2024-07-10 19:00:00
+339,Congelador,2,hielo_bordes,5,10,0,74,normal,2024-09-17 13:00:00
+340,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,normal,2024-06-19 19:00:00
+341,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,normal,2024-09-20 09:00:00
+342,Congelador,2,hielo_bordes,10,10,1,74,normal,2024-11-11 18:00:00
+343,Congelador,2,hielo_bordes,10,10,1,74,tecnico,2024-09-29 14:00:00
+344,Cuarto Frio,5,cicla_hielo_si,11,11,1,87,normal,2024-06-18 17:00:00
+345,Refrigerador,1,compresor_no_voltaje_no,17,17,1,94,tecnico,2025-01-06 20:00:00
+346,Refrigerador,1,ruido_burbujeo,1,1,1,73,tecnico,2025-02-04 19:00:00
+347,Cuarto Frio,5,consumo_alto_cf,8,8,1,86,normal,2024-09-02 09:00:00
+348,Cuarto Frio,5,alarmas,15,15,1,90,tecnico,2024-07-13 09:00:00
+349,Aire Acondicionado,3,filtros_limpios_presion_baja,1,1,1,77,tecnico,2024-04-07 07:00:00
+350,Enfriador Comercial,4,comp_no_ec,3,3,1,90,normal,2024-04-14 13:00:00
+351,Cuarto Frio,5,consumo_alto_cf,2,8,0,86,tecnico,2024-09-22 10:00:00
+352,Cuarto Frio,5,cicla_hielo_si,17,11,0,87,normal,2024-06-09 09:00:00
+353,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,normal,2025-01-30 20:00:00
+354,Congelador,2,hielo_bordes,10,10,1,74,tecnico,2024-05-22 15:00:00
+355,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,tecnico,2025-01-29 11:00:00
+356,Aire Acondicionado,3,ruido_interior,18,18,1,92,normal,2025-01-04 11:00:00
+357,Congelador,2,comp_func_temp_0_10,1,1,1,76,normal,2024-07-21 20:00:00
+358,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-12-31 08:00:00
+359,Congelador,2,hielo_evaporador,11,11,1,74,tecnico,2024-04-19 10:00:00
+360,Cuarto Frio,5,cicla_hielo_si,9,11,0,87,normal,2024-11-11 18:00:00
+361,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,normal,2024-09-28 10:00:00
+362,Aire Acondicionado,3,filtros_limpios_presion_baja,1,1,1,77,normal,2024-08-29 08:00:00
+363,Aire Acondicionado,3,filtros_limpios_presion_baja,7,1,0,77,normal,2024-08-31 14:00:00
+364,Aire Acondicionado,3,exterior_no_control_no,12,12,1,87,normal,2025-01-28 08:00:00
+365,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,tecnico,2024-01-20 09:00:00
+366,Enfriador Comercial,4,comp_func_cond_sucio,2,8,0,92,tecnico,2024-07-22 19:00:00
+367,Enfriador Comercial,4,comp_func_cond_sucio,11,8,0,92,tecnico,2024-01-05 11:00:00
+368,Cuarto Frio,5,consumo_alto_cf,8,8,1,86,tecnico,2024-05-25 14:00:00
+369,Cuarto Frio,5,consumo_alto_cf,8,8,1,86,tecnico,2024-09-15 14:00:00
+370,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2025-01-09 14:00:00
+371,Congelador,2,consumo_alto,8,8,1,93,tecnico,2024-05-31 16:00:00
+372,Aire Acondicionado,3,filtros_sucios,13,13,1,97,normal,2024-07-26 20:00:00
+373,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,normal,2024-02-18 09:00:00
+374,Aire Acondicionado,3,ruido_interior,18,18,1,92,normal,2024-05-13 13:00:00
+375,Aire Acondicionado,3,ruido_interior,18,18,1,92,tecnico,2024-06-03 16:00:00
+376,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,normal,2024-04-30 07:00:00
+377,Refrigerador,1,ruido_vibracion,3,3,1,74,normal,2024-09-14 18:00:00
+378,Congelador,2,consumo_alto,8,8,1,93,tecnico,2024-05-31 12:00:00
+379,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,normal,2024-03-19 14:00:00
+380,Cuarto Frio,5,cicla_hielo_si,11,11,1,87,normal,2024-08-29 19:00:00
+381,Cuarto Frio,5,alarmas,15,15,1,90,tecnico,2024-12-14 19:00:00
+382,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,normal,2024-07-04 08:00:00
+383,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,normal,2024-09-15 10:00:00
+384,Cuarto Frio,5,consumo_alto_cf,8,8,1,86,normal,2024-09-23 14:00:00
+385,Refrigerador,1,hielo_puerta_mala,10,10,1,77,normal,2024-02-16 15:00:00
+386,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,normal,2024-08-21 16:00:00
+387,Refrigerador,1,ruido_zumbido,18,18,1,83,tecnico,2025-01-05 07:00:00
+388,Enfriador Comercial,4,comp_no_ec,3,3,1,90,tecnico,2024-10-23 08:00:00
+389,Refrigerador,1,compresor_no_voltaje_no,17,17,1,94,normal,2024-01-31 08:00:00
+390,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,normal,2024-03-10 19:00:00
+391,Enfriador Comercial,4,comp_no_ec,14,3,0,90,normal,2024-07-12 13:00:00
+392,Refrigerador,1,hielo_puerta_mala,5,10,0,77,normal,2024-06-27 08:00:00
+393,Aire Acondicionado,3,ruido_exterior,3,3,1,89,normal,2024-04-24 20:00:00
+394,Refrigerador,1,gotea,9,9,1,89,normal,2024-12-10 18:00:00
+395,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,tecnico,2024-05-06 14:00:00
+396,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,tecnico,2025-01-06 19:00:00
+397,Refrigerador,1,escarcha_mucha_ventilador_si,5,5,1,88,normal,2025-01-27 07:00:00
+398,Aire Acondicionado,3,exterior_no_control_si,4,4,1,78,normal,2024-08-16 16:00:00
+399,Refrigerador,1,escarcha_poca_burbujeo_no,2,2,1,78,normal,2024-04-29 15:00:00
+400,Aire Acondicionado,3,filtros_limpios_presion_baja,1,1,1,77,tecnico,2024-04-29 20:00:00
+401,Cuarto Frio,5,cicla_hielo_si,11,11,1,87,tecnico,2024-06-13 10:00:00
+402,Congelador,2,comp_func_temp_mayor_0,18,3,0,96,normal,2024-06-02 11:00:00
+403,Refrigerador,1,ruido_zumbido,6,18,0,83,normal,2024-08-06 15:00:00
+404,Enfriador Comercial,4,comp_func_cond_limpio,14,1,0,87,tecnico,2024-06-12 18:00:00
+405,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,normal,2025-01-21 15:00:00
+406,Enfriador Comercial,4,comp_func_cond_sucio,8,8,1,92,normal,2024-12-28 09:00:00
+407,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,tecnico,2024-10-12 15:00:00
+408,Aire Acondicionado,3,gotea_nueva,9,9,1,72,normal,2024-11-27 08:00:00
+409,Enfriador Comercial,4,comp_no_ec,3,3,1,90,tecnico,2024-04-07 07:00:00
+410,Congelador,2,hielo_evaporador,11,11,1,74,normal,2024-02-07 10:00:00
+411,Cuarto Frio,5,alarmas,15,15,1,90,normal,2024-04-16 20:00:00
+412,Congelador,2,comp_no,1,4,0,80,normal,2024-04-07 18:00:00
+413,Refrigerador,1,hielo_puerta_bien,17,11,0,85,tecnico,2024-12-22 16:00:00
+414,Aire Acondicionado,3,gotea_nueva,12,9,0,72,tecnico,2024-07-13 14:00:00
+415,Cuarto Frio,5,alarmas,15,15,1,90,normal,2024-09-19 14:00:00
+416,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,tecnico,2025-01-24 20:00:00
+417,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-10-15 20:00:00
+418,Aire Acondicionado,3,filtros_sucios,13,13,1,97,normal,2024-10-26 16:00:00
+419,Enfriador Comercial,4,comp_no_ec,3,3,1,90,normal,2024-07-13 16:00:00
+420,Aire Acondicionado,3,ruido_interior,18,18,1,92,tecnico,2024-06-21 11:00:00
+421,Enfriador Comercial,4,puertas_mal,10,10,1,95,normal,2024-03-27 18:00:00
+422,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-04-04 15:00:00
+423,Refrigerador,1,ruido_zumbido,18,18,1,83,tecnico,2024-12-08 07:00:00
+424,Refrigerador,1,compresor_no_voltaje_no,17,17,1,94,normal,2024-02-04 18:00:00
+425,Aire Acondicionado,3,filtros_limpios_presion_baja,1,1,1,77,normal,2024-01-31 16:00:00
+426,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,normal,2024-09-29 15:00:00
+427,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,tecnico,2024-10-01 11:00:00
+428,Refrigerador,1,ruido_zumbido,18,18,1,83,normal,2024-04-01 08:00:00
+429,Refrigerador,1,ruido_zumbido,18,18,1,83,normal,2024-09-26 11:00:00
+430,Congelador,2,comp_no,4,4,1,80,normal,2024-07-26 14:00:00
+431,Cuarto Frio,5,trabaja_sin_parar_filt_no,9,1,0,93,normal,2024-02-11 17:00:00
+432,Refrigerador,1,escarcha_mucha_ventilador_no,6,6,1,73,normal,2024-08-31 07:00:00
+433,Refrigerador,1,hielo_puerta_bien,11,11,1,85,normal,2024-08-10 17:00:00
+434,Congelador,2,hielo_bordes,4,10,0,74,tecnico,2024-01-22 10:00:00
+435,Aire Acondicionado,3,codigo_error,12,12,1,81,normal,2024-02-08 17:00:00
+436,Congelador,2,hielo_bordes,10,10,1,74,normal,2024-06-10 07:00:00
+437,Aire Acondicionado,3,codigo_error,12,12,1,81,tecnico,2024-07-22 08:00:00
+438,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-07-18 17:00:00
+439,Cuarto Frio,5,cicla_hielo_si,11,11,1,87,tecnico,2024-12-18 18:00:00
+440,Refrigerador,1,ruido_zumbido,18,18,1,83,normal,2024-02-20 13:00:00
+441,Aire Acondicionado,3,filtros_limpios_presion_normal,3,3,1,88,tecnico,2024-10-31 13:00:00
+442,Congelador,2,comp_func_temp_0_10,1,1,1,76,tecnico,2024-08-18 14:00:00
+443,Aire Acondicionado,3,gotea_antigua,9,9,1,94,normal,2024-04-05 17:00:00
+444,Cuarto Frio,5,alarmas,15,15,1,90,tecnico,2024-05-31 19:00:00
+445,Aire Acondicionado,3,filtros_limpios_presion_normal,3,3,1,88,normal,2024-12-30 19:00:00
+446,Aire Acondicionado,3,gotea_nueva,9,9,1,72,normal,2024-01-03 11:00:00
+447,Enfriador Comercial,4,comp_no_ec,3,3,1,90,normal,2024-02-14 09:00:00
+448,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,normal,2024-02-22 07:00:00
+449,Refrigerador,1,compresor_no_voltaje_si,3,3,1,89,normal,2024-06-15 20:00:00
+450,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,normal,2024-02-13 18:00:00
+451,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,normal,2024-07-13 09:00:00
+452,Aire Acondicionado,3,exterior_no_control_no,12,12,1,87,normal,2024-02-02 09:00:00
+453,Enfriador Comercial,4,comp_no_ec,3,3,1,90,normal,2024-02-09 12:00:00
+454,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-11-11 10:00:00
+455,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,normal,2024-07-21 12:00:00
+456,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,normal,2024-06-20 13:00:00
+457,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,normal,2024-12-21 10:00:00
+458,Enfriador Comercial,4,comp_no_ec,3,3,1,90,normal,2024-06-12 11:00:00
+459,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,normal,2024-05-23 20:00:00
+460,Enfriador Comercial,4,comp_no_ec,3,3,1,90,normal,2024-10-30 15:00:00
+461,Aire Acondicionado,3,ruido_exterior,3,3,1,89,tecnico,2024-12-28 10:00:00
+462,Enfriador Comercial,4,comp_no_ec,3,3,1,90,normal,2024-07-28 17:00:00
+463,Enfriador Comercial,4,comp_func_cond_sucio,8,8,1,92,normal,2024-12-03 09:00:00
+464,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,tecnico,2024-09-02 16:00:00
+465,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,tecnico,2024-12-20 13:00:00
+466,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,normal,2024-10-01 16:00:00
+467,Refrigerador,1,escarcha_mucha_ventilador_no,13,6,0,73,normal,2024-11-09 07:00:00
+468,Cuarto Frio,5,alarmas,15,15,1,90,normal,2025-01-20 12:00:00
+469,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,normal,2024-09-18 18:00:00
+470,Cuarto Frio,5,consumo_alto_cf,8,8,1,86,normal,2024-08-16 12:00:00
+471,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,normal,2024-09-13 09:00:00
+472,Congelador,2,comp_func_temp_0_10,1,1,1,76,normal,2024-02-13 08:00:00
+473,Aire Acondicionado,3,gotea_antigua,9,9,1,94,normal,2024-04-15 15:00:00
+474,Enfriador Comercial,4,comp_no_ec,3,3,1,90,normal,2024-12-22 14:00:00
+475,Congelador,2,comp_func_temp_0_10,1,1,1,76,tecnico,2024-02-28 07:00:00
+476,Congelador,2,consumo_alto,8,8,1,93,tecnico,2025-01-14 10:00:00
+477,Cuarto Frio,5,trabaja_sin_parar_filt_no,1,1,1,93,normal,2024-08-06 14:00:00
+478,Aire Acondicionado,3,gotea_nueva,9,9,1,72,normal,2024-12-02 13:00:00
+479,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,tecnico,2024-08-18 16:00:00
+480,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,normal,2024-05-22 19:00:00
+481,Refrigerador,1,ruido_burbujeo,1,1,1,73,tecnico,2024-04-05 12:00:00
+482,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-09-07 15:00:00
+483,Congelador,2,hielo_bordes,10,10,1,74,normal,2024-02-28 12:00:00
+484,Congelador,2,hielo_evaporador,11,11,1,74,tecnico,2024-12-27 19:00:00
+485,Congelador,2,hielo_bordes,10,10,1,74,normal,2024-06-09 08:00:00
+486,Aire Acondicionado,3,exterior_no_control_no,12,12,1,87,normal,2024-03-13 15:00:00
+487,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,normal,2024-08-04 09:00:00
+488,Enfriador Comercial,4,puertas_mal,10,10,1,95,tecnico,2024-03-29 15:00:00
+489,Aire Acondicionado,3,ruido_interior,18,18,1,92,normal,2024-08-18 16:00:00
+490,Refrigerador,1,compresor_no_voltaje_si,17,3,0,89,normal,2024-07-15 15:00:00
+491,Cuarto Frio,5,alarmas,15,15,1,90,normal,2024-07-31 18:00:00
+492,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,normal,2025-01-24 10:00:00
+493,Congelador,2,comp_func_temp_0_10,1,1,1,76,normal,2024-03-27 19:00:00
+494,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,tecnico,2024-10-08 15:00:00
+495,Refrigerador,1,ruido_burbujeo,1,1,1,73,tecnico,2024-07-06 15:00:00
+496,Refrigerador,1,gotea,9,9,1,89,normal,2024-08-05 08:00:00
+497,Aire Acondicionado,3,exterior_no_control_no,2,12,0,87,normal,2024-06-27 20:00:00
+498,Refrigerador,1,ruido_vibracion,5,3,0,74,tecnico,2024-05-01 10:00:00
+499,Cuarto Frio,5,alarmas,15,15,1,90,tecnico,2024-11-19 13:00:00
+500,Aire Acondicionado,3,codigo_error,12,12,1,81,normal,2024-04-15 19:00:00
+501,Refrigerador,1,ruido_burbujeo,1,1,1,73,normal,2024-10-02 09:00:00
+502,Congelador,2,consumo_alto,8,8,1,93,normal,2024-09-20 17:00:00
+503,Refrigerador,1,escarcha_poca_burbujeo_si,15,1,0,79,tecnico,2024-05-21 20:00:00
+504,Aire Acondicionado,3,filtros_sucios,13,13,1,97,tecnico,2024-05-06 19:00:00
+505,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,normal,2024-11-17 13:00:00
+506,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,tecnico,2025-01-28 08:00:00
+507,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,normal,2024-07-07 14:00:00
+508,Enfriador Comercial,4,comp_no_ec,3,3,1,90,tecnico,2025-01-10 08:00:00
+509,Enfriador Comercial,4,puertas_mal,10,10,1,95,normal,2024-02-02 19:00:00
+510,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,normal,2024-04-18 14:00:00
+511,Congelador,2,comp_no,12,4,0,80,normal,2024-03-07 16:00:00
+512,Enfriador Comercial,4,comp_no_ec,3,3,1,90,tecnico,2024-01-24 08:00:00
+513,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,tecnico,2024-08-13 14:00:00
+514,Refrigerador,1,compresor_no_voltaje_no,17,17,1,94,normal,2024-03-08 17:00:00
+515,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,tecnico,2024-02-17 17:00:00
+516,Congelador,2,comp_no,4,4,1,80,normal,2024-11-28 09:00:00
+517,Refrigerador,1,compresor_no_voltaje_no,17,17,1,94,tecnico,2025-01-21 10:00:00
+518,Enfriador Comercial,4,puertas_mal,10,10,1,95,normal,2024-04-19 14:00:00
+519,Refrigerador,1,escarcha_poca_burbujeo_si,1,1,1,79,normal,2024-08-15 07:00:00
+520,Refrigerador,1,hielo_puerta_bien,11,11,1,85,normal,2024-08-04 18:00:00
+521,Aire Acondicionado,3,ruido_interior,18,18,1,92,normal,2025-01-09 19:00:00
+522,Refrigerador,1,escarcha_mucha_ventilador_no,6,6,1,73,tecnico,2024-03-11 13:00:00
+523,Aire Acondicionado,3,filtros_sucios,13,13,1,97,normal,2024-11-08 17:00:00
+524,Aire Acondicionado,3,ruido_interior,18,18,1,92,normal,2025-01-18 09:00:00
+525,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,tecnico,2024-02-14 08:00:00
+526,Aire Acondicionado,3,filtros_limpios_presion_normal,3,3,1,88,normal,2024-08-07 12:00:00
+527,Aire Acondicionado,3,exterior_no_control_si,4,4,1,78,normal,2024-10-10 16:00:00
+528,Cuarto Frio,5,alarmas,15,15,1,90,tecnico,2024-12-19 07:00:00
+529,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2025-01-17 13:00:00
+530,Congelador,2,consumo_alto,8,8,1,93,tecnico,2024-05-02 14:00:00
+531,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,normal,2024-02-06 15:00:00
+532,Refrigerador,1,compresor_no_voltaje_si,6,3,0,89,normal,2024-10-18 13:00:00
+533,Congelador,2,hielo_bordes,10,10,1,74,tecnico,2025-01-29 08:00:00
+534,Refrigerador,1,ruido_burbujeo,1,1,1,73,normal,2024-01-21 07:00:00
+535,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,tecnico,2025-01-27 13:00:00
+536,Enfriador Comercial,4,puertas_mal,10,10,1,95,normal,2024-10-02 16:00:00
+537,Aire Acondicionado,3,exterior_no_control_no,12,12,1,87,normal,2024-04-14 19:00:00
+538,Aire Acondicionado,3,ruido_exterior,3,3,1,89,normal,2025-01-25 20:00:00
+539,Refrigerador,1,compresor_no_clic_si,4,4,1,90,tecnico,2024-05-02 07:00:00
+540,Aire Acondicionado,3,filtros_limpios_presion_normal,5,3,0,88,normal,2024-11-07 07:00:00
+541,Congelador,2,consumo_alto,8,8,1,93,tecnico,2024-03-02 07:00:00
+542,Aire Acondicionado,3,filtros_limpios_presion_baja,1,1,1,77,tecnico,2024-09-24 15:00:00
+543,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,tecnico,2024-05-17 18:00:00
+544,Refrigerador,1,gotea,12,9,0,89,tecnico,2024-05-19 15:00:00
+545,Refrigerador,1,compresor_no_clic_si,4,4,1,90,normal,2024-02-09 14:00:00
+546,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,normal,2024-10-17 09:00:00
+547,Congelador,2,comp_func_temp_mayor_0,3,3,1,96,normal,2024-10-20 17:00:00
+548,Refrigerador,1,escarcha_poca_burbujeo_no,2,2,1,78,normal,2024-01-07 10:00:00
+549,Refrigerador,1,ruido_vibracion,3,3,1,74,tecnico,2024-04-01 20:00:00
+550,Refrigerador,1,ruido_zumbido,18,18,1,83,tecnico,2024-12-01 13:00:00
+551,Aire Acondicionado,3,gotea_antigua,9,9,1,94,tecnico,2024-06-12 11:00:00
+552,Refrigerador,1,ruido_burbujeo,1,1,1,73,normal,2024-01-27 09:00:00
+553,Aire Acondicionado,3,ruido_exterior,14,3,0,89,normal,2024-08-26 20:00:00
+554,Congelador,2,comp_no,4,4,1,80,normal,2024-01-05 12:00:00
+555,Aire Acondicionado,3,exterior_no_control_no,12,12,1,87,normal,2024-11-14 10:00:00
+556,Enfriador Comercial,4,comp_no_ec,3,3,1,90,normal,2025-01-30 19:00:00
+557,Aire Acondicionado,3,ruido_exterior,3,3,1,89,normal,2024-01-04 13:00:00
+558,Refrigerador,1,escarcha_poca_burbujeo_no,2,2,1,78,normal,2024-12-21 07:00:00
+559,Congelador,2,comp_func_temp_0_10,1,1,1,76,normal,2025-01-12 18:00:00
+560,Congelador,2,comp_func_temp_0_10,1,1,1,76,tecnico,2024-08-02 14:00:00
+561,Refrigerador,1,escarcha_poca_burbujeo_si,1,1,1,79,normal,2024-04-28 20:00:00
+562,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,normal,2025-01-17 08:00:00
+563,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,normal,2024-07-20 08:00:00
+564,Cuarto Frio,5,consumo_alto_cf,8,8,1,86,normal,2024-03-07 10:00:00
+565,Congelador,2,comp_no,14,4,0,80,tecnico,2025-01-11 12:00:00
+566,Congelador,2,hielo_evaporador,11,11,1,74,normal,2024-04-13 09:00:00
+567,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,normal,2024-08-26 12:00:00
+568,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,tecnico,2024-04-16 14:00:00
+569,Congelador,2,hielo_evaporador,11,11,1,74,normal,2024-03-21 19:00:00
+570,Congelador,2,consumo_alto,8,8,1,93,normal,2024-06-16 09:00:00
+571,Refrigerador,1,hielo_puerta_bien,11,11,1,85,normal,2024-09-19 07:00:00
+572,Congelador,2,comp_no,7,4,0,80,normal,2024-07-26 20:00:00
+573,Enfriador Comercial,4,cristales_resist_no,16,16,1,96,normal,2024-08-24 08:00:00
+574,Aire Acondicionado,3,filtros_limpios_presion_normal,3,3,1,88,tecnico,2024-04-23 09:00:00
+575,Aire Acondicionado,3,gotea_nueva,9,9,1,72,normal,2024-11-26 08:00:00
+576,Cuarto Frio,5,consumo_alto_cf,8,8,1,86,tecnico,2024-01-12 08:00:00
+577,Aire Acondicionado,3,ruido_interior,18,18,1,92,normal,2024-06-18 08:00:00
+578,Refrigerador,1,ruido_vibracion,3,3,1,74,tecnico,2024-08-09 20:00:00
+579,Enfriador Comercial,4,cristales_resist_si,16,16,1,85,normal,2024-03-29 12:00:00
+580,Aire Acondicionado,3,filtros_sucios,13,13,1,97,normal,2024-03-17 07:00:00
+581,Cuarto Frio,5,consumo_alto_cf,8,8,1,86,normal,2024-09-12 13:00:00
+582,Cuarto Frio,5,cicla_hielo_no,1,1,1,94,normal,2024-03-11 13:00:00
+583,Aire Acondicionado,3,ruido_exterior,3,3,1,89,tecnico,2024-10-05 19:00:00
+584,Refrigerador,1,compresor_no_voltaje_no,17,17,1,94,normal,2024-10-05 19:00:00
+585,Enfriador Comercial,4,comp_no_ec,18,3,0,90,normal,2024-05-18 09:00:00
+586,Refrigerador,1,compresor_no_voltaje_si,3,3,1,89,normal,2025-02-02 11:00:00
+587,Refrigerador,1,gotea,18,9,0,89,normal,2024-10-26 10:00:00
+588,Aire Acondicionado,3,filtros_limpios_presion_normal,3,3,1,88,normal,2024-09-30 20:00:00
+589,Refrigerador,1,gotea,8,9,0,89,normal,2024-07-17 12:00:00
+590,Aire Acondicionado,3,filtros_sucios,13,13,1,97,normal,2025-01-12 18:00:00
+591,Congelador,2,hielo_bordes,10,10,1,74,tecnico,2024-10-17 16:00:00
+592,Aire Acondicionado,3,codigo_error,17,12,0,81,normal,2024-03-30 14:00:00
+593,Refrigerador,1,escarcha_mucha_ventilador_no,6,6,1,73,normal,2024-01-11 15:00:00
+594,Enfriador Comercial,4,comp_func_cond_limpio,1,1,1,87,normal,2024-03-07 12:00:00
+595,Aire Acondicionado,3,gotea_antigua,9,9,1,94,normal,2024-12-26 09:00:00
+596,Refrigerador,1,ruido_zumbido,3,18,0,83,normal,2024-12-05 13:00:00
+597,Cuarto Frio,5,trabaja_sin_parar_filt_si,14,14,1,86,normal,2024-03-21 18:00:00
+598,Enfriador Comercial,4,puertas_mal,12,10,0,95,normal,2024-10-14 18:00:00
+599,Cuarto Frio,5,cicla_hielo_si,11,11,1,87,normal,2024-03-30 13:00:00
+600,Congelador,2,consumo_alto,8,8,1,93,normal,2025-01-08 07:00:00
