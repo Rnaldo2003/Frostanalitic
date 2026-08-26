@@ -50,6 +50,18 @@ CREATE TABLE IF NOT EXISTS `nodos` (
   CONSTRAINT `nodos_ibfk_1` FOREIGN KEY (`equipo_id`) REFERENCES `equipos` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- ── Fallas ───────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS `fallas` (
+  `id`          INT          NOT NULL AUTO_INCREMENT,
+  `nombre`      VARCHAR(255) NOT NULL,
+  `descripcion` TEXT,
+  `severidad`   ENUM('baja','media','alta') DEFAULT 'media',
+  `equipos_tag` VARCHAR(200) DEFAULT NULL,
+  `veces_diagnosticada` INT DEFAULT 0,
+  `veces_correcta`      INT DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- ── Opciones de cada nodo ────────────────────────────────────
 CREATE TABLE IF NOT EXISTS `opciones` (
   `id`              INT          NOT NULL AUTO_INCREMENT,
@@ -66,18 +78,6 @@ CREATE TABLE IF NOT EXISTS `opciones` (
   CONSTRAINT `opciones_ibfk_1` FOREIGN KEY (`nodo_id`)        REFERENCES `nodos`  (`id`),
   CONSTRAINT `opciones_ibfk_2` FOREIGN KEY (`siguiente_nodo`) REFERENCES `nodos`  (`id`),
   CONSTRAINT `opciones_ibfk_3` FOREIGN KEY (`falla_id`)       REFERENCES `fallas` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- ── Fallas ───────────────────────────────────────────────────
-CREATE TABLE IF NOT EXISTS `fallas` (
-  `id`          INT          NOT NULL AUTO_INCREMENT,
-  `nombre`      VARCHAR(255) NOT NULL,
-  `descripcion` TEXT,
-  `severidad`   ENUM('baja','media','alta') DEFAULT 'media',
-  `equipos_tag` VARCHAR(200) DEFAULT NULL,
-  `veces_diagnosticada` INT DEFAULT 0,
-  `veces_correcta`      INT DEFAULT 0,
-  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ── Soluciones ───────────────────────────────────────────────
