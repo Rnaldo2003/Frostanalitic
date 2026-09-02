@@ -1,0 +1,10 @@
+# Dependencias SOLO para generar el dataset sintético y las gráficas del
+# módulo de ciencia de datos (ds/simulate_data.py y ds/ml_model.py).
+# No hacen falta en el servidor de Railway (por eso no están en el
+# requirements.txt raíz); instálalas en tu máquina si vas a regenerar
+# las gráficas para la tesis:
+#
+#   pip install -r ds/requirements-ds.txt
+#
+matplotlib
+seaborn

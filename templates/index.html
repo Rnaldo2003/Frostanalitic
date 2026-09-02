@@ -315,9 +315,118 @@ tbody td{padding:12px;}
 }
 .grafica-card img{width:100%;display:block;}
 .grafica-title{font-size:11px;font-weight:600;color:var(--muted);padding:10px 14px;text-transform:uppercase;letter-spacing:.4px;}
+
+/* ── AUTH BAR ────────────────────────────────────── */
+#authBar{
+  position:fixed;top:16px;right:20px;z-index:50;
+  display:flex;align-items:center;gap:8px;
+}
+.auth-chip{
+  background:var(--surf);border:1px solid var(--border2);
+  border-radius:999px;padding:6px 14px 6px 6px;
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;color:var(--soft);
+}
+.auth-avatar{
+  width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue2),var(--blue));
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.auth-rol{
+  font-size:9px;text-transform:uppercase;letter-spacing:.4px;
+  padding:1px 6px;border-radius:4px;margin-left:4px;
+  background:rgba(79,127,255,.12);color:var(--ice);
+}
+.btn-ghost{
+  background:none;border:1px solid var(--border2);color:var(--soft);
+  border-radius:999px;padding:8px 16px;font-size:12px;font-weight:600;
+  cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s;
+}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue);}
+.btn-link{background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;font-family:'Inter',sans-serif;text-decoration:underline;padding:0;}
+.btn-link:hover{color:var(--text);}
+
+/* ── MODAL ───────────────────────────────────────── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(6,8,12,.72);
+  z-index:100;align-items:center;justify-content:center;
+}
+.modal-overlay.show{display:flex;}
+.modal-box{
+  background:var(--surf);border:1px solid var(--border2);
+  border-radius:var(--r2);padding:32px;width:340px;max-width:90vw;
+  animation:up .2s ease;
+}
+.modal-title{font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:4px;}
+.modal-sub{color:var(--muted);font-size:12px;margin-bottom:20px;}
+.modal-field{width:100%;background:var(--surf2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:10px 12px;font-family:'Inter',sans-serif;font-size:13px;margin-bottom:10px;}
+.modal-err{color:var(--red);font-size:12px;margin-bottom:10px;min-height:14px;}
+.modal-btns{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+.modal-switch{text-align:center;margin-top:14px;font-size:12px;color:var(--muted);}
+
+/* ── ADMIN ───────────────────────────────────────── */
+.admin-cols{display:grid;grid-template-columns:220px 1fr;gap:16px;align-items:start;}
+.admin-side{display:flex;flex-direction:column;gap:6px;}
+.admin-eq-btn{
+  text-align:left;background:var(--surf2);border:1px solid var(--border);
+  color:var(--soft);border-radius:8px;padding:9px 12px;cursor:pointer;
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:500;
+}
+.admin-eq-btn.on{border-color:var(--blue);color:var(--blue);background:rgba(79,127,255,.08);}
+.nodo-card{background:var(--surf2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;}
+.nodo-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;}
+.nodo-preg{font-size:13px;font-weight:600;color:var(--text);flex:1;background:transparent;border:none;border-bottom:1px dashed var(--border2);padding:2px 0;}
+.nodo-preg:focus{outline:none;border-bottom-color:var(--blue);}
+.op-row{display:flex;gap:6px;align-items:center;margin-bottom:6px;flex-wrap:wrap;}
+.op-row input,.op-row select{
+  background:var(--surf);border:1px solid var(--border);color:var(--text);
+  border-radius:6px;padding:6px 8px;font-size:11px;font-family:'Inter',sans-serif;
+}
+.op-row input[type=text].texto{flex:2;min-width:120px;}
+.op-row input.icono{width:40px;text-align:center;}
+.op-row input.prob{width:56px;}
+.op-row select.destino{flex:1;min-width:140px;}
+.op-mini{background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;padding:2px 6px;}
+.op-mini:hover{color:var(--red);}
+.btn-tiny{background:var(--surf3);border:1px solid var(--border2);color:var(--soft);border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:'Inter',sans-serif;}
+.btn-tiny:hover{color:var(--blue);border-color:var(--blue);}
+.admin-msg{font-size:12px;margin:8px 0;min-height:16px;}
+.admin-msg.ok{color:var(--green);}
+.admin-msg.err{color:var(--red);}
+
+/* ── ML COMPARE ──────────────────────────────────── */
+.ml-box{margin-top:16px;padding:16px;background:var(--surf2);border:1px solid var(--border);border-radius:var(--r);}
+.ml-title{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px;}
+.ml-pred{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:12px;color:var(--soft);border-bottom:1px solid var(--border);}
+.ml-pred:last-child{border-bottom:none;}
+.ml-pred b{color:var(--text);font-weight:500;}
 </style>
 </head>
 <body>
+
+<!-- AUTH BAR -->
+<div id="authBar"></div>
+
+<!-- MODAL LOGIN / REGISTRO -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal-box">
+    <div class="modal-title" id="authModalTitle">Iniciar sesión</div>
+    <div class="modal-sub" id="authModalSub">Accede para dar seguimiento a tus diagnósticos.</div>
+    <input class="modal-field" id="authNombre" placeholder="Nombre" style="display:none;">
+    <input class="modal-field" id="authEmail" placeholder="Email" type="email">
+    <input class="modal-field" id="authPassword" placeholder="Contraseña" type="password">
+    <div class="modal-err" id="authErr"></div>
+    <div class="modal-btns">
+      <button class="btn-launch" style="justify-content:center;" onclick="submitAuth()" id="authSubmitBtn">Entrar</button>
+      <button class="btn-sec" style="justify-content:center;" onclick="closeAuthModal()">Cancelar</button>
+    </div>
+    <div class="modal-switch">
+      <span id="authSwitchText">¿No tienes cuenta?</span>
+      <button class="btn-link" onclick="toggleAuthMode()" id="authSwitchBtn">Regístrate</button>
+    </div>
+  </div>
+</div>
 
 <!-- SIDEBAR -->
 <div id="sb">
@@ -331,6 +440,7 @@ tbody td{padding:12px;}
   <button class="sb-nav" onclick="go('fallas',this)"><span class="sb-icon">⚠</span><span class="sb-lbl">Fallas</span></button>
   <button class="sb-nav" onclick="go('arbol',this)"><span class="sb-icon">◫</span><span class="sb-lbl">Árbol visual</span></button>
   <button class="sb-nav" onclick="go('stats',this)"><span class="sb-icon">▦</span><span class="sb-lbl">Estadísticas</span></button>
+  <button class="sb-nav" onclick="go('admin',this)" id="navAdmin" style="display:none;"><span class="sb-icon">⚙</span><span class="sb-lbl">Admin</span></button>
   <div class="sb-foot">
     <span class="dot"></span>Sistema activo<br>
     <span style="opacity:.5">v2.0 · MySQL · DS</span>
@@ -426,8 +536,11 @@ tbody td{padding:12px;}
   <div class="page" id="page-stats">
     <div class="topbar">
       <div><div class="pg-title">Estadísticas</div><div class="pg-sub">Aprendizaje y retroalimentación</div></div>
-      <button class="btn-sec" onclick="loadStats()">↻ Actualizar</button>
+      <div class="diag-btns" id="statsBtns">
+        <button class="btn-sec" onclick="loadStats()">↻ Actualizar</button>
+      </div>
     </div>
+    <div class="ml-box" id="mlStatusBox" style="display:none;"></div>
     <div id="statsContent"><p class="no-data">Cargando…</p></div>
     <div class="graficas-grid" id="graficasGrid" style="display:none;">
       <div class="grafica-card">
@@ -446,6 +559,31 @@ tbody td{padding:12px;}
         <div class="grafica-title">Matriz de confusión</div>
         <img src="/static/graficas/matriz_confusion.png" alt="Matriz de confusión" onerror="this.parentElement.style.display='none'">
       </div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div class="page" id="page-admin">
+    <div class="topbar">
+      <div><div class="pg-title">Panel de administración</div><div class="pg-sub">Editar árbol de decisiones y usuarios</div></div>
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">Árbol de decisiones</div>
+      <div class="admin-cols">
+        <div class="admin-side" id="adminEqList"></div>
+        <div>
+          <div class="admin-msg" id="adminMsg"></div>
+          <div id="adminNodos"><p class="no-data">Selecciona un equipo.</p></div>
+          <button class="btn-sec" id="btnNuevoNodo" style="display:none;" onclick="crearNodoRaiz()">+ Nodo raíz para este equipo</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Usuarios y roles</div>
+      <table>
+        <thead><tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Activo</th></tr></thead>
+        <tbody id="adminUsuarios"></tbody>
+      </table>
     </div>
   </div>
 
@@ -503,6 +641,7 @@ function go(id, el, skipReset){
   if(id==='fallas') loadFallas();
   if(id==='arbol') renderTree('Refrigerador');
   if(id==='stats') loadStats();
+  if(id==='admin') loadAdmin();
 }
 
 /* ── EQ GRIDS ────────────────────────────────────── */
@@ -619,8 +758,34 @@ function showResult(res){
         </div>
       </div>
       <div class="fb-ok" id="fbOk">✓ Retroalimentación guardada. El sistema ha aprendido de esto.</div>
+    </div>
+    <div class="ml-box" id="mlCompareBox" style="display:none;">
+      <div class="ml-title">🤖 Comparación con inteligencia artificial</div>
+      <div id="mlCompareContent"></div>
     </div>`;
   saveSes(res);
+  fetchMlComparison(res);
+}
+
+async function fetchMlComparison(res){
+  const box=document.getElementById('mlCompareBox');
+  const cont=document.getElementById('mlCompareContent');
+  if(!box||!cont) return;
+  try{
+    const r=await fetch('/api/ml/predict',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({equipo:curEq,camino:path})});
+    const d=await r.json();
+    box.style.display='block';
+    if(!d.disponible){
+      cont.innerHTML=`<p class="no-data" style="padding:0;">Todavía no hay un modelo de IA en vivo entrenado con datos reales
+        (se necesitan ${d.minimo_requerido||25} diagnósticos con retroalimentación; hay ${d.sesiones_con_feedback||0}).
+        Mientras tanto, la comparación de modelos entrenados con datos simulados está en la pestaña Estadísticas.</p>`;
+      return;
+    }
+    cont.innerHTML = d.predicciones.map(p=>`
+      <div class="ml-pred"><span><b>${p.nombre}</b></span><span>${p.prob}%</span></div>`).join('')
+      + `<div style="font-size:11px;color:var(--muted);margin-top:8px;">Árbol de reglas: <b style="color:var(--text)">${res.falla}</b> (${res.prob}%)</div>`;
+  }catch{ box.style.display='none'; }
 }
 
 function fbVote(ok){
@@ -768,11 +933,293 @@ async function loadStats(){
     div.innerHTML=`<p class="no-data">BD no disponible. Los diagnósticos funcionan sin conexión.</p>`;
     gg.style.display='none';
   }
+  loadMlStatus();
+  renderStatsBtns();
 }
+
+function renderStatsBtns(){
+  const wrap=document.getElementById('statsBtns');
+  if(!wrap) return;
+  let extra='';
+  if(currentUser && (currentUser.rol==='admin' || currentUser.rol==='tecnico')){
+    extra += `<button class="btn-sec" onclick="reentrenarModelo()">🤖 Reentrenar IA con datos reales</button>`;
+    extra += `<a class="btn-sec" href="/api/export/csv" style="text-decoration:none;">⬇ CSV</a>`;
+    extra += `<a class="btn-sec" href="/api/export/pdf" style="text-decoration:none;">⬇ PDF</a>`;
+  }
+  wrap.innerHTML = `<button class="btn-sec" onclick="loadStats()">↻ Actualizar</button>` + extra;
+}
+
+async function loadMlStatus(){
+  const box=document.getElementById('mlStatusBox');
+  if(!box) return;
+  try{
+    const r=await fetch('/api/ml/status'); const d=await r.json();
+    box.style.display='block';
+    box.innerHTML = `<div class="ml-title">🤖 Estado del modelo de IA en vivo</div>
+      <div style="font-size:12px;color:var(--soft);">
+        ${d.disponible ? '✓ Modelo entrenado con datos reales activo.' : 'Aún no entrenado con datos reales.'}
+        Sesiones con retroalimentación: <b style="color:var(--text)">${d.sesiones_con_feedback}</b>
+        (mínimo para entrenar: ${d.minimo_requerido}).
+      </div>`;
+  }catch{ box.style.display='none'; }
+}
+
+async function reentrenarModelo(){
+  const box=document.getElementById('mlStatusBox');
+  try{
+    const r=await fetch('/api/ml/retrain',{method:'POST'});
+    const d=await r.json();
+    if(!r.ok || !d.ok){ alert(d.error||'No se pudo reentrenar.'); return; }
+    alert(`Modelo reentrenado con ${d.muestras_entrenamiento} sesiones (${d.clases_distintas} fallas distintas). Precisión de validación: ${d.accuracy_validacion}%.`);
+    loadMlStatus();
+  }catch{ alert('Error de red al reentrenar.'); }
+}
+
+/* ── AUTENTICACIÓN ───────────────────────────────── */
+let currentUser = null;
+let authMode = 'login'; // 'login' | 'register'
+
+async function checkAuth(){
+  try{
+    const r = await fetch('/api/auth/me'); const d = await r.json();
+    currentUser = d.usuario || null;
+  }catch{ currentUser = null; }
+  updateAuthUI();
+}
+
+function updateAuthUI(){
+  const bar = document.getElementById('authBar');
+  const navAdmin = document.getElementById('navAdmin');
+  if(currentUser){
+    const inicial = (currentUser.nombre||'?').trim().charAt(0).toUpperCase();
+    bar.innerHTML = `
+      <div class="auth-chip">
+        <span class="auth-avatar">${inicial}</span>
+        <span>${currentUser.nombre}</span>
+        <span class="auth-rol">${currentUser.rol}</span>
+      </div>
+      <button class="btn-ghost" onclick="doLogout()">Salir</button>`;
+    navAdmin.style.display = currentUser.rol==='admin' ? '' : 'none';
+  }else{
+    bar.innerHTML = `<button class="btn-ghost" onclick="openAuthModal('login')">Iniciar sesión</button>`;
+    navAdmin.style.display = 'none';
+    // Si estaba en la página admin y se deslogueó, regresar a inicio
+    if(document.getElementById('page-admin').classList.contains('on')){
+      go('home', document.querySelectorAll('.sb-nav')[0]);
+    }
+  }
+  renderStatsBtns();
+}
+
+function openAuthModal(mode){
+  authMode = mode;
+  document.getElementById('authModal').classList.add('show');
+  document.getElementById('authErr').textContent = '';
+  applyAuthMode();
+}
+function closeAuthModal(){
+  document.getElementById('authModal').classList.remove('show');
+}
+function toggleAuthMode(){
+  authMode = authMode==='login' ? 'register' : 'login';
+  applyAuthMode();
+}
+function applyAuthMode(){
+  const esLogin = authMode==='login';
+  document.getElementById('authModalTitle').textContent = esLogin ? 'Iniciar sesión' : 'Crear cuenta';
+  document.getElementById('authModalSub').textContent = esLogin
+    ? 'Accede para dar seguimiento a tus diagnósticos.'
+    : 'Regístrate para guardar tu historial (rol normal).';
+  document.getElementById('authNombre').style.display = esLogin ? 'none' : '';
+  document.getElementById('authSubmitBtn').textContent = esLogin ? 'Entrar' : 'Crear cuenta';
+  document.getElementById('authSwitchText').textContent = esLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?';
+  document.getElementById('authSwitchBtn').textContent = esLogin ? 'Regístrate' : 'Inicia sesión';
+  document.getElementById('authErr').textContent = '';
+}
+async function submitAuth(){
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const nombre = document.getElementById('authNombre').value.trim();
+  const err = document.getElementById('authErr');
+  err.textContent = '';
+  const endpoint = authMode==='login' ? '/api/auth/login' : '/api/auth/register';
+  const body = authMode==='login' ? {email,password} : {nombre,email,password};
+  try{
+    const r = await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const d = await r.json();
+    if(!r.ok){ err.textContent = d.error || 'No se pudo procesar la solicitud.'; return; }
+    currentUser = d.usuario;
+    closeAuthModal();
+    updateAuthUI();
+  }catch{ err.textContent = 'Error de red.'; }
+}
+async function doLogout(){
+  try{ await fetch('/api/auth/logout',{method:'POST'}); }catch{}
+  currentUser = null;
+  updateAuthUI();
+}
+
+/* ── ADMIN: árbol dinámico ───────────────────────── */
+let adminEquipoActual = null;
+let adminFallasCache = [];
+
+async function loadAdmin(){
+  const eqs = await (await fetch('/api/admin/equipos')).json().catch(()=>[]);
+  adminFallasCache = await (await fetch('/api/admin/fallas')).json().catch(()=>[]);
+  document.getElementById('adminEqList').innerHTML = eqs.map(e=>
+    `<button class="admin-eq-btn" data-id="${e.id}" onclick="seleccionarEquipoAdmin(${e.id},this)">${e.icono||''} ${e.nombre}</button>`
+  ).join('');
+  await loadUsuarios();
+}
+
+async function seleccionarEquipoAdmin(equipoId, el){
+  adminEquipoActual = equipoId;
+  document.querySelectorAll('.admin-eq-btn').forEach(b=>b.classList.remove('on'));
+  if(el) el.classList.add('on');
+  await refrescarNodosAdmin();
+}
+
+async function refrescarNodosAdmin(){
+  if(!adminEquipoActual) return;
+  const nodos = await (await fetch('/api/admin/nodos?equipo_id='+adminEquipoActual)).json().catch(()=>[]);
+  const cont = document.getElementById('adminNodos');
+  const btnNuevo = document.getElementById('btnNuevoNodo');
+  btnNuevo.style.display = nodos.some(n=>n.es_raiz) ? 'none' : '';
+  if(!nodos.length){
+    cont.innerHTML = `<p class="no-data">Este equipo aún usa el árbol estático de fábrica (no migrado a la BD). Crea un nodo raíz para empezar a editarlo aquí.</p>`;
+    return;
+  }
+  const opcionesDestino = (excluirNodoId) => nodos.filter(n=>n.id!==excluirNodoId)
+    .map(n=>`<option value="nodo:${n.id}">→ Nodo: ${trunc(n.pregunta,30)}</option>`).join('')
+    + adminFallasCache.map(f=>`<option value="falla:${f.id}">⚑ Falla: ${trunc(f.nombre,30)}</option>`).join('');
+
+  cont.innerHTML = nodos.map(n => `
+    <div class="nodo-card">
+      <div class="nodo-head">
+        <input class="nodo-preg" value="${escAttr(n.pregunta)}" onchange="guardarPreguntaNodo(${n.id},this.value)">
+        ${n.es_raiz?'<span class="badge badge-blue">raíz</span>':`<button class="btn-tiny" onclick="eliminarNodoAdmin(${n.id})">Borrar nodo</button>`}
+      </div>
+      ${n.opciones.map(o=>`
+        <div class="op-row" data-op="${o.id}">
+          <input type="text" class="texto" value="${escAttr(o.texto)}" placeholder="Texto de la opción" onchange="guardarCampoOpcion(${o.id},'texto',this.value)">
+          <input type="text" class="icono" value="${escAttr(o.icono||'')}" placeholder="🔧" onchange="guardarCampoOpcion(${o.id},'icono',this.value)">
+          <select class="destino" onchange="cambiarDestinoOpcion(${o.id},this.value)">
+            <option value="">— elegir destino —</option>
+            ${opcionesDestino(n.id)}
+          </select>
+          <input type="number" class="prob" value="${o.prob_experto??''}" placeholder="%" title="Probabilidad experta" onchange="guardarCampoOpcion(${o.id},'prob_experto',this.value?parseInt(this.value):null)">
+          <button class="op-mini" onclick="eliminarOpcionAdmin(${o.id})" title="Borrar opción">✕</button>
+        </div>`).join('')}
+      <button class="btn-tiny" onclick="crearOpcionAdmin(${n.id})">+ Opción</button>
+    </div>`).join('');
+
+  // Preseleccionar el destino actual de cada opción en su <select>
+  nodos.forEach(n => n.opciones.forEach(o=>{
+    const row = cont.querySelector(`.op-row[data-op="${o.id}"] .destino`);
+    if(!row) return;
+    if(o.siguiente_nodo) row.value = 'nodo:'+o.siguiente_nodo;
+    else if(o.falla_id) row.value = 'falla:'+o.falla_id;
+  }));
+}
+
+function mensajeAdmin(msg, ok){
+  const el = document.getElementById('adminMsg');
+  el.textContent = msg;
+  el.className = 'admin-msg ' + (ok?'ok':'err');
+  setTimeout(()=>{ el.textContent=''; }, 4000);
+}
+
+async function crearNodoRaiz(){
+  const pregunta = prompt('Pregunta raíz para este equipo:');
+  if(!pregunta) return;
+  const r = await fetch('/api/admin/nodos',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({equipo_id:adminEquipoActual,pregunta,es_raiz:true})});
+  const d = await r.json();
+  if(!r.ok){ mensajeAdmin(d.error,false); return; }
+  mensajeAdmin('Nodo raíz creado.',true);
+  refrescarNodosAdmin();
+}
+async function guardarPreguntaNodo(nodoId, pregunta){
+  const r = await fetch('/api/admin/nodos/'+nodoId,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({pregunta})});
+  const d = await r.json();
+  mensajeAdmin(r.ok?'Pregunta actualizada.':d.error, r.ok);
+}
+async function eliminarNodoAdmin(nodoId){
+  if(!confirm('¿Borrar este nodo y sus opciones?')) return;
+  const r = await fetch('/api/admin/nodos/'+nodoId,{method:'DELETE'});
+  const d = await r.json();
+  mensajeAdmin(r.ok?'Nodo borrado.':d.error, r.ok);
+  refrescarNodosAdmin();
+}
+async function crearOpcionAdmin(nodoId){
+  const texto = prompt('Texto de la nueva opción:');
+  if(!texto) return;
+  const r = await fetch('/api/admin/opciones',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({nodo_id:nodoId,texto,falla_id:adminFallasCache[0]?.id||null})});
+  const d = await r.json();
+  if(!r.ok){ mensajeAdmin(d.error,false); return; }
+  mensajeAdmin('Opción creada (elige su destino).',true);
+  refrescarNodosAdmin();
+}
+async function guardarCampoOpcion(opcionId, campo, valor){
+  const r = await fetch('/api/admin/opciones/'+opcionId,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({[campo]:valor})});
+  const d = await r.json();
+  mensajeAdmin(r.ok?'Guardado.':d.error, r.ok);
+}
+async function cambiarDestinoOpcion(opcionId, valor){
+  const [tipo, id] = (valor||'').split(':');
+  const payload = tipo==='nodo' ? {siguiente_nodo:parseInt(id),falla_id:null}
+                : tipo==='falla' ? {siguiente_nodo:null,falla_id:parseInt(id)}
+                : {};
+  const r = await fetch('/api/admin/opciones/'+opcionId,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  const d = await r.json();
+  mensajeAdmin(r.ok?'Destino actualizado.':d.error, r.ok);
+  if(r.ok) refrescarNodosAdmin();
+}
+async function eliminarOpcionAdmin(opcionId){
+  if(!confirm('¿Borrar esta opción?')) return;
+  const r = await fetch('/api/admin/opciones/'+opcionId,{method:'DELETE'});
+  const d = await r.json();
+  mensajeAdmin(r.ok?'Opción borrada.':d.error, r.ok);
+  refrescarNodosAdmin();
+}
+
+/* ── ADMIN: usuarios ─────────────────────────────── */
+async function loadUsuarios(){
+  const usuarios = await (await fetch('/api/admin/usuarios')).json().catch(()=>[]);
+  document.getElementById('adminUsuarios').innerHTML = usuarios.map(u=>`
+    <tr>
+      <td>${u.nombre}</td>
+      <td style="color:var(--muted);font-size:12px;">${u.email}</td>
+      <td>
+        <select class="tree-sel" style="padding:4px 8px;font-size:12px;" onchange="cambiarRolUsuario(${u.id},this.value)">
+          ${['normal','tecnico','admin'].map(r=>`<option value="${r}" ${r===u.rol?'selected':''}>${r}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <select class="tree-sel" style="padding:4px 8px;font-size:12px;" onchange="cambiarActivoUsuario(${u.id},this.value)">
+          <option value="1" ${u.activo?'selected':''}>Sí</option>
+          <option value="0" ${!u.activo?'selected':''}>No</option>
+        </select>
+      </td>
+    </tr>`).join('');
+}
+async function cambiarRolUsuario(id, rol){
+  const r = await fetch('/api/admin/usuarios/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({rol})});
+  const d = await r.json();
+  mensajeAdmin(r.ok?'Rol actualizado.':d.error, r.ok);
+}
+async function cambiarActivoUsuario(id, valor){
+  const r = await fetch('/api/admin/usuarios/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({activo:valor==='1'})});
+  const d = await r.json();
+  mensajeAdmin(r.ok?'Actualizado.':d.error, r.ok);
+}
+function escAttr(s){ return String(s??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
 
 /* ── INIT ────────────────────────────────────────── */
 async function init(){
   buildGrids();
+  await checkAuth();
   try{
     const r=await fetch('/api/stats'); const d=await r.json();
     if(!d.error){
