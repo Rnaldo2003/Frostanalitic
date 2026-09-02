@@ -1,8 +1,16 @@
 -- ============================================================
---  FrostAnalitic — Schema v2  (MySQL 8+)
+--  FrostAnalitic — Schema v3  (MySQL 8+)
 --  Incluye: equipos, síntomas, árbol de decisiones dinámico,
---           fallas, soluciones, sesiones de diagnóstico y
---           sistema de aprendizaje por retroalimentación.
+--           fallas, soluciones, sesiones de diagnóstico,
+--           sistema de aprendizaje por retroalimentación y
+--           usuarios/roles (autenticación).
+--
+--  Este script es seguro de re-ejecutar sobre una base de datos que
+--  ya tenía el schema v2: las tablas nuevas se crean con
+--  CREATE TABLE IF NOT EXISTS, y las columnas nuevas en tablas ya
+--  existentes se agregan al final con bloques idempotentes
+--  (sección "MIGRACIÓN"), que verifican INFORMATION_SCHEMA antes de
+--  alterar nada.
 -- ============================================================
 
 CREATE DATABASE IF NOT EXISTS `frostanalitic`
@@ -24,6 +32,22 @@ INSERT INTO `equipos` (`nombre`, `icono`) VALUES
   ('Enfriador Comercial','🏪'),
   ('Cuarto Frío',       '🏭')
 ON DUPLICATE KEY UPDATE `nombre`=VALUES(`nombre`);
+
+-- ── Usuarios (autenticación y roles) ─────────────────────────
+-- rol: 'admin' (edita el árbol y gestiona usuarios), 'tecnico'
+-- (ve estadísticas detalladas y exporta reportes), 'normal'
+-- (diagnostica y da retroalimentación, igual que un invitado).
+CREATE TABLE IF NOT EXISTS `usuarios` (
+  `id`            INT          NOT NULL AUTO_INCREMENT,
+  `nombre`        VARCHAR(120) NOT NULL,
+  `email`         VARCHAR(180) NOT NULL,
+  `password_hash` VARCHAR(255) NOT NULL,
+  `rol`           ENUM('admin','tecnico','normal') NOT NULL DEFAULT 'normal',
+  `activo`        TINYINT(1)   DEFAULT 1,
+  `created_at`    DATETIME     DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ── Síntomas ─────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS `sintomas` (
@@ -71,6 +95,8 @@ CREATE TABLE IF NOT EXISTS `opciones` (
   `siguiente_nodo`  INT          DEFAULT NULL,  -- NULL si es hoja
   `falla_id`        INT          DEFAULT NULL,  -- solo si es hoja
   `orden`           INT          DEFAULT 0,
+  `prob_experto`    INT          DEFAULT NULL,  -- % estimado por el experto (solo si es hoja)
+  `rec_text`        TEXT         DEFAULT NULL,  -- recomendación específica de este camino (solo si es hoja)
   PRIMARY KEY (`id`),
   KEY `nodo_id` (`nodo_id`),
   KEY `siguiente_nodo` (`siguiente_nodo`),
@@ -97,6 +123,7 @@ CREATE TABLE IF NOT EXISTS `sesiones` (
   `id`              INT      NOT NULL AUTO_INCREMENT,
   `equipo_id`       INT      DEFAULT NULL,
   `falla_id`        INT      DEFAULT NULL,   -- diagnóstico dado
+  `usuario_id`      INT      DEFAULT NULL,   -- quién lo ejecutó (NULL = invitado anónimo)
   `probabilidad`    INT      DEFAULT NULL,
   `camino_json`     JSON     DEFAULT NULL,   -- preguntas/respuestas
   `fue_correcto`    TINYINT(1) DEFAULT NULL, -- NULL = sin feedback aún
@@ -107,8 +134,10 @@ CREATE TABLE IF NOT EXISTS `sesiones` (
   PRIMARY KEY (`id`),
   KEY `equipo_id` (`equipo_id`),
   KEY `falla_id`  (`falla_id`),
+  KEY `usuario_id` (`usuario_id`),
   CONSTRAINT `sesiones_ibfk_1` FOREIGN KEY (`equipo_id`) REFERENCES `equipos` (`id`),
-  CONSTRAINT `sesiones_ibfk_2` FOREIGN KEY (`falla_id`)  REFERENCES `fallas`  (`id`)
+  CONSTRAINT `sesiones_ibfk_2` FOREIGN KEY (`falla_id`)  REFERENCES `fallas`  (`id`),
+  CONSTRAINT `sesiones_ibfk_3` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ── Correcciones / aprendizaje ───────────────────────────────
@@ -169,3 +198,39 @@ INSERT INTO `soluciones` (`falla_id`, `descripcion`, `tags`) VALUES
 (16, 'Verificar continuidad de resistencias anti-vaho. Medir voltaje de alimentación.',                        'Eléctrico,Anti-vaho'),
 (17, 'Revisar fusibles del tablero. Verificar breaker. Comprobar voltaje en tomacorriente.',                   'Eléctrico,Instalación'),
 (18, 'Lubricar o reemplazar motor del ventilador. Verificar desbalance en aspas.',                             'Mecánico,Rodamientos');
+
+-- ============================================================
+--  MIGRACIÓN IDEMPOTENTE (schema v2 -> v3)
+--  Si esta base de datos ya existía con el schema v2 (antes de
+--  usuarios/roles y del árbol dinámico con prob_experto/rec_text),
+--  las tablas de arriba ya estaban creadas SIN estas columnas
+--  nuevas, y CREATE TABLE IF NOT EXISTS no las agrega. Estos
+--  bloques verifican INFORMATION_SCHEMA y solo alteran la tabla si
+--  hace falta, así que es seguro correr este archivo completo
+--  las veces que quieras, tanto en una BD nueva como en una vieja.
+-- ============================================================
+
+-- `opciones`.prob_experto
+SET @col_existe = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+  WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'opciones' AND COLUMN_NAME = 'prob_experto');
+SET @sql = IF(@col_existe = 0,
+  'ALTER TABLE `opciones` ADD COLUMN `prob_experto` INT DEFAULT NULL',
+  'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- `opciones`.rec_text
+SET @col_existe = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+  WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'opciones' AND COLUMN_NAME = 'rec_text');
+SET @sql = IF(@col_existe = 0,
+  'ALTER TABLE `opciones` ADD COLUMN `rec_text` TEXT DEFAULT NULL',
+  'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- `sesiones`.usuario_id (+ FK a usuarios)
+SET @col_existe = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+  WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'sesiones' AND COLUMN_NAME = 'usuario_id');
+SET @sql = IF(@col_existe = 0,
+  'ALTER TABLE `sesiones` ADD COLUMN `usuario_id` INT DEFAULT NULL, ADD KEY `usuario_id` (`usuario_id`), ADD CONSTRAINT `sesiones_ibfk_3` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)',
+  'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+

@@ -4,3 +4,7 @@ pymysql
 cryptography
 gunicorn
 python-dotenv
+scikit-learn
+pandas
+numpy
+reportlab
