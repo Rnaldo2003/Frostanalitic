@@ -119,6 +119,23 @@ def me():
     return jsonify({'usuario': usuario.to_public_dict() if usuario else None})
 
 
+@auth_bp.route('/password', methods=['PUT'])
+def cambiar_password():
+    usuario = current_user()
+    if not usuario:
+        return jsonify({'error': 'Necesitas iniciar sesión para esta acción.'}), 401
+    data = request.get_json(silent=True) or {}
+    actual = data.get('actual') or ''
+    nueva = data.get('nueva') or ''
+    if not usuario.check_password(actual):
+        return jsonify({'error': 'La contraseña actual no es correcta.'}), 400
+    if len(nueva) < 6:
+        return jsonify({'error': 'La contraseña nueva debe tener al menos 6 caracteres.'}), 400
+    usuario.set_password(nueva)
+    db.session.commit()
+    return jsonify({'ok': True})
+
+
 def seed_default_admin():
     """Crea un usuario admin inicial si la tabla 'usuarios' está vacía.
     Se ejecuta una vez al arrancar la app (ver app.py). No hace nada si ya

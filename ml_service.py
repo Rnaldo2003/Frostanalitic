@@ -50,12 +50,32 @@ def _vectorizar(equipo_nombre, camino):
 
 
 def _construir_dataset_real():
-    from models.models import Sesion, Equipo
+    """Arma el dataset de entrenamiento a partir de sesiones reales.
+
+    Para no dejar que cualquiera "envenene" el modelo con datos falsos:
+    - Una sesión que el propio usuario marcó como correcta (fue_correcto=True)
+      se usa tal cual (bajo riesgo: solo confirma lo que el árbol ya dijo).
+    - Una sesión CORREGIDA (fue_correcto=False, con una falla_real_id
+      distinta) solo se usa si un admin la revisó y aprobó en el panel
+      (Correccion.revisado = True). Una corrección sin aprobar todavía
+      NO entra al entrenamiento.
+    """
+    from models.models import Sesion, Equipo, Correccion
     equipos = {e.id: e.nombre for e in Equipo.query.all()}
+
+    correcciones_aprobadas = {
+        c.sesion_id: c.falla_correcta_id
+        for c in Correccion.query.filter_by(revisado=True).all()
+        if c.falla_correcta_id
+    }
+
     filas = Sesion.query.filter(Sesion.fue_correcto.isnot(None)).all()
     textos, etiquetas = [], []
     for s in filas:
-        etiqueta = s.falla_real_id if (s.fue_correcto is False and s.falla_real_id) else s.falla_id
+        if s.fue_correcto is True:
+            etiqueta = s.falla_id
+        else:
+            etiqueta = correcciones_aprobadas.get(s.id)  # None si no está aprobada aún
         if not etiqueta:
             continue
         textos.append(_camino_a_texto(equipos.get(s.equipo_id), s.camino_json or []))
