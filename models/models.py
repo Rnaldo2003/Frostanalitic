@@ -7,13 +7,13 @@ db = SQLAlchemy()
 class Equipo(db.Model):
     __tablename__ = 'equipos'
     id     = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(100), nullable=False)
+    nombre = db.Column(db.String(100), nullable=False, unique=True)
     icono  = db.Column(db.String(10), default='🔧')
 
 class Falla(db.Model):
     __tablename__ = 'fallas'
     id          = db.Column(db.Integer, primary_key=True)
-    nombre      = db.Column(db.String(255), nullable=False)
+    nombre      = db.Column(db.String(255), nullable=False, unique=True)
     descripcion = db.Column(db.Text)
     severidad   = db.Column(db.Enum('baja','media','alta'), default='media')
     equipos_tag = db.Column(db.String(200))

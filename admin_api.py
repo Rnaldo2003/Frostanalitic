@@ -44,6 +44,9 @@ def editar_equipo(equipo_id):
         nombre = (data.get('nombre') or '').strip()
         if not nombre:
             return jsonify({'error': 'El nombre no puede quedar vacío.'}), 400
+        existente = Equipo.query.filter_by(nombre=nombre).first()
+        if existente and existente.id != equipo.id:
+            return jsonify({'error': 'Ya existe otro equipo con ese nombre.'}), 409
         equipo.nombre = nombre
     if 'icono' in data:
         equipo.icono = (data.get('icono') or '🔧').strip()[:10] or '🔧'
@@ -85,6 +88,8 @@ def crear_falla():
         return jsonify({'error': 'El nombre de la falla es obligatorio.'}), 400
     if data.get('severidad') not in ('baja', 'media', 'alta'):
         return jsonify({'error': 'Severidad inválida (usa baja, media o alta).'}), 400
+    if Falla.query.filter_by(nombre=nombre).first():
+        return jsonify({'error': 'Ya existe una falla con ese nombre.'}), 409
     falla = Falla(
         nombre=nombre, descripcion=data.get('descripcion'),
         severidad=data.get('severidad'), equipos_tag=data.get('equipos_tag'),
@@ -105,6 +110,9 @@ def editar_falla(falla_id):
         nombre = (data.get('nombre') or '').strip()
         if not nombre:
             return jsonify({'error': 'El nombre no puede quedar vacío.'}), 400
+        existente = Falla.query.filter_by(nombre=nombre).first()
+        if existente and existente.id != falla.id:
+            return jsonify({'error': 'Ya existe otra falla con ese nombre.'}), 409
         falla.nombre = nombre
     if 'severidad' in data:
         if data['severidad'] not in ('baja', 'media', 'alta'):
