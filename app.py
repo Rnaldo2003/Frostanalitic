@@ -207,6 +207,30 @@ def api_feedback():
         db.session.rollback()
         return jsonify({'error':str(e)}),500
 
+@app.route('/api/mis-sesiones')
+def api_mis_sesiones():
+    usuario = current_user()
+    if not usuario:
+        return jsonify({'error': 'Necesitas iniciar sesión para ver tu historial.'}), 401
+    try:
+        equipos = {e.id: e.nombre for e in Equipo.query.all()}
+        fallas = {f.id: f.nombre for f in Falla.query.all()}
+        sesiones = (Sesion.query
+                    .filter_by(usuario_id=usuario.id)
+                    .order_by(Sesion.id.desc())
+                    .limit(50).all())
+        return jsonify([{
+            'id': s.id,
+            'fecha': s.created_at.strftime('%Y-%m-%d %H:%M') if s.created_at else '',
+            'equipo': equipos.get(s.equipo_id, '—'),
+            'falla': fallas.get(s.falla_id, '—'),
+            'probabilidad': s.probabilidad,
+            'fue_correcto': s.fue_correcto,
+        } for s in sesiones])
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/stats')
 def api_stats():
     try:

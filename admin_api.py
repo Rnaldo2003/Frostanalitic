@@ -4,24 +4,133 @@ Panel de administración: CRUD del árbol dinámico (nodos/opciones) y
 gestión de usuarios/roles. Todas las rutas requieren rol 'admin'.
 """
 from flask import Blueprint, request, jsonify
-from models.models import db, Equipo, Falla, Nodo, Opcion, Usuario
-from auth import admin_required
+from models.models import db, Equipo, Falla, Nodo, Opcion, Usuario, Sesion, Correccion, Solucion
+from auth import admin_required, current_user
 from tree_service import build_tree_from_db
 
 admin_bp = Blueprint('admin_api', __name__, url_prefix='/api/admin')
 
 
-# ── Datos de apoyo para los formularios del panel ──────────────
+# ── Equipos ──────────────────────────────────────────────────
 @admin_bp.route('/equipos')
 @admin_required
 def admin_equipos():
     return jsonify([{'id': e.id, 'nombre': e.nombre, 'icono': e.icono} for e in Equipo.query.all()])
 
 
+@admin_bp.route('/equipos', methods=['POST'])
+@admin_required
+def crear_equipo():
+    data = request.get_json(silent=True) or {}
+    nombre = (data.get('nombre') or '').strip()
+    if not nombre:
+        return jsonify({'error': 'El nombre del equipo es obligatorio.'}), 400
+    if Equipo.query.filter_by(nombre=nombre).first():
+        return jsonify({'error': 'Ya existe un equipo con ese nombre.'}), 409
+    equipo = Equipo(nombre=nombre, icono=(data.get('icono') or '🔧').strip()[:10] or '🔧')
+    db.session.add(equipo)
+    db.session.commit()
+    return jsonify({'id': equipo.id}), 201
+
+
+@admin_bp.route('/equipos/<int:equipo_id>', methods=['PUT'])
+@admin_required
+def editar_equipo(equipo_id):
+    equipo = db.session.get(Equipo, equipo_id)
+    if not equipo:
+        return jsonify({'error': 'Equipo no encontrado.'}), 404
+    data = request.get_json(silent=True) or {}
+    if 'nombre' in data:
+        nombre = (data.get('nombre') or '').strip()
+        if not nombre:
+            return jsonify({'error': 'El nombre no puede quedar vacío.'}), 400
+        equipo.nombre = nombre
+    if 'icono' in data:
+        equipo.icono = (data.get('icono') or '🔧').strip()[:10] or '🔧'
+    db.session.commit()
+    return jsonify({'ok': True})
+
+
+@admin_bp.route('/equipos/<int:equipo_id>', methods=['DELETE'])
+@admin_required
+def eliminar_equipo(equipo_id):
+    equipo = db.session.get(Equipo, equipo_id)
+    if not equipo:
+        return jsonify({'error': 'Equipo no encontrado.'}), 404
+    if Nodo.query.filter_by(equipo_id=equipo_id).first() or Sesion.query.filter_by(equipo_id=equipo_id).first():
+        return jsonify({'error': 'No se puede borrar: este equipo ya tiene árbol y/o diagnósticos registrados.'}), 409
+    db.session.delete(equipo)
+    db.session.commit()
+    return jsonify({'ok': True})
+
+
+# ── Fallas ───────────────────────────────────────────────────
 @admin_bp.route('/fallas')
 @admin_required
 def admin_fallas():
-    return jsonify([{'id': f.id, 'nombre': f.nombre} for f in Falla.query.order_by(Falla.nombre).all()])
+    fallas = Falla.query.order_by(Falla.nombre).all()
+    return jsonify([{
+        'id': f.id, 'nombre': f.nombre, 'descripcion': f.descripcion,
+        'severidad': f.severidad, 'equipos_tag': f.equipos_tag,
+        'veces_diagnosticada': f.veces_diagnosticada, 'veces_correcta': f.veces_correcta,
+    } for f in fallas])
+
+
+@admin_bp.route('/fallas', methods=['POST'])
+@admin_required
+def crear_falla():
+    data = request.get_json(silent=True) or {}
+    nombre = (data.get('nombre') or '').strip()
+    if not nombre:
+        return jsonify({'error': 'El nombre de la falla es obligatorio.'}), 400
+    if data.get('severidad') not in ('baja', 'media', 'alta'):
+        return jsonify({'error': 'Severidad inválida (usa baja, media o alta).'}), 400
+    falla = Falla(
+        nombre=nombre, descripcion=data.get('descripcion'),
+        severidad=data.get('severidad'), equipos_tag=data.get('equipos_tag'),
+    )
+    db.session.add(falla)
+    db.session.commit()
+    return jsonify({'id': falla.id}), 201
+
+
+@admin_bp.route('/fallas/<int:falla_id>', methods=['PUT'])
+@admin_required
+def editar_falla(falla_id):
+    falla = db.session.get(Falla, falla_id)
+    if not falla:
+        return jsonify({'error': 'Falla no encontrada.'}), 404
+    data = request.get_json(silent=True) or {}
+    if 'nombre' in data:
+        nombre = (data.get('nombre') or '').strip()
+        if not nombre:
+            return jsonify({'error': 'El nombre no puede quedar vacío.'}), 400
+        falla.nombre = nombre
+    if 'severidad' in data:
+        if data['severidad'] not in ('baja', 'media', 'alta'):
+            return jsonify({'error': 'Severidad inválida.'}), 400
+        falla.severidad = data['severidad']
+    for campo in ('descripcion', 'equipos_tag'):
+        if campo in data:
+            setattr(falla, campo, data[campo])
+    db.session.commit()
+    return jsonify({'ok': True})
+
+
+@admin_bp.route('/fallas/<int:falla_id>', methods=['DELETE'])
+@admin_required
+def eliminar_falla(falla_id):
+    falla = db.session.get(Falla, falla_id)
+    if not falla:
+        return jsonify({'error': 'Falla no encontrada.'}), 404
+    en_uso = (Opcion.query.filter_by(falla_id=falla_id).first()
+              or Sesion.query.filter_by(falla_id=falla_id).first()
+              or Solucion.query.filter_by(falla_id=falla_id).first())
+    if en_uso:
+        return jsonify({'error': 'No se puede borrar: esta falla ya está en uso en el árbol, soluciones o diagnósticos.'}), 409
+    db.session.delete(falla)
+    db.session.commit()
+    return jsonify({'ok': True})
 
 
 # ── Árbol: nodos ────────────────────────────────────────────────
@@ -230,6 +339,9 @@ def editar_usuario(usuario_id):
     if not usuario:
         return jsonify({'error': 'Usuario no encontrado.'}), 404
     data = request.get_json(silent=True) or {}
+    yo = current_user()
+    if usuario.id == yo.id and ('rol' in data and data['rol'] != 'admin' or 'activo' in data and not data['activo']):
+        return jsonify({'error': 'No puedes quitarte tu propio rol de admin ni desactivar tu propia cuenta.'}), 400
     if 'rol' in data:
         if data['rol'] not in ('admin', 'tecnico', 'normal'):
             return jsonify({'error': 'Rol inválido.'}), 400
@@ -238,3 +350,84 @@ def editar_usuario(usuario_id):
         usuario.activo = bool(data['activo'])
     db.session.commit()
     return jsonify({'ok': True})
+
+
+@admin_bp.route('/usuarios/<int:usuario_id>', methods=['DELETE'])
+@admin_required
+def eliminar_usuario(usuario_id):
+    usuario = db.session.get(Usuario, usuario_id)
+    if not usuario:
+        return jsonify({'error': 'Usuario no encontrado.'}), 404
+    if usuario.id == current_user().id:
+        return jsonify({'error': 'No puedes eliminar tu propia cuenta.'}), 400
+    # No se borran sus diagnósticos anteriores, solo se desvincula el autor.
+    Sesion.query.filter_by(usuario_id=usuario.id).update({'usuario_id': None})
+    db.session.delete(usuario)
+    db.session.commit()
+    return jsonify({'ok': True})
+
+
+# ── Correcciones: moderación de retroalimentación ───────────────
+# Cuando un usuario dice "el diagnóstico estaba mal, la falla real era X",
+# esa corrección NO se usa para reentrenar la IA en vivo hasta que un
+# admin la aprueba aquí (ver ml_service._construir_dataset_real). Así
+# evitamos que alguien "envenene" el aprendizaje con datos falsos.
+@admin_bp.route('/correcciones')
+@admin_required
+def listar_correcciones():
+    solo_pendientes = request.args.get('pendientes', '1') != '0'
+    q = Correccion.query
+    if solo_pendientes:
+        q = q.filter_by(revisado=False)
+    correcciones = q.order_by(Correccion.id.desc()).limit(100).all()
+
+    sesion_ids = [c.sesion_id for c in correcciones]
+    sesiones = {s.id: s for s in Sesion.query.filter(Sesion.id.in_(sesion_ids)).all()} if sesion_ids else {}
+    fallas = {f.id: f.nombre for f in Falla.query.all()}
+    equipos = {e.id: e.nombre for e in Equipo.query.all()}
+
+    resultado = []
+    for c in correcciones:
+        s = sesiones.get(c.sesion_id)
+        resultado.append({
+            'id': c.id,
+            'sesion_id': c.sesion_id,
+            'revisado': bool(c.revisado),
+            'equipo': equipos.get(s.equipo_id) if s else None,
+            'falla_diagnosticada': fallas.get(s.falla_id) if s else None,
+            'falla_correcta_id': c.falla_correcta_id,
+            'falla_correcta': fallas.get(c.falla_correcta_id) if c.falla_correcta_id else None,
+            'descripcion_libre': c.descripcion_libre,
+            'nivel_usuario': c.nivel_usuario,
+            'created_at': c.created_at.strftime('%Y-%m-%d %H:%M') if c.created_at else None,
+        })
+    return jsonify(resultado)
+
+
+@admin_bp.route('/correcciones/<int:correccion_id>', methods=['PUT'])
+@admin_required
+def revisar_correccion(correccion_id):
+    correccion = db.session.get(Correccion, correccion_id)
+    if not correccion:
+        return jsonify({'error': 'Corrección no encontrada.'}), 404
+    data = request.get_json(silent=True) or {}
+    aprobar = bool(data.get('aprobar'))
+
+    ya_estaba_revisada = correccion.revisado
+    correccion.revisado = True  # revisado = "ya pasó por un admin", apruebe o rechace
+
+    if aprobar:
+        if not ya_estaba_revisada and correccion.falla_correcta_id:
+            falla_real = db.session.get(Falla, correccion.falla_correcta_id)
+            if falla_real:
+                falla_real.veces_diagnosticada = (falla_real.veces_diagnosticada or 0) + 1
+                falla_real.veces_correcta = (falla_real.veces_correcta or 0) + 1
+    else:
+        # Rechazada: se limpia la falla sugerida para que
+        # ml_service._construir_dataset_real() (que exige revisado=True
+        # Y falla_correcta_id presente) nunca la use para entrenar la IA.
+        # La descripción libre se conserva como registro de lo que dijo el usuario.
+        correccion.falla_correcta_id = None
+
+    db.session.commit()
+    return jsonify({'ok': True, 'aprobada': aprobar})

@@ -316,33 +316,36 @@ tbody td{padding:12px;}
 .grafica-card img{width:100%;display:block;}
 .grafica-title{font-size:11px;font-weight:600;color:var(--muted);padding:10px 14px;text-transform:uppercase;letter-spacing:.4px;}
 
-/* ── AUTH BAR ────────────────────────────────────── */
+/* ── AUTH: widget dentro del sidebar (pie) ───────── */
 #authBar{
-  position:fixed;top:16px;right:20px;z-index:50;
-  display:flex;align-items:center;gap:8px;
+  display:flex;flex-direction:column;gap:8px;
+  padding:10px 2px;border-top:1px solid var(--border);margin-top:8px;
 }
+#sb.col #authBar{padding:10px 0;align-items:center;}
 .auth-chip{
-  background:var(--surf);border:1px solid var(--border2);
-  border-radius:999px;padding:6px 14px 6px 6px;
   display:flex;align-items:center;gap:8px;
-  font-size:12px;color:var(--soft);
+  font-size:12px;color:var(--soft);overflow:hidden;
 }
 .auth-avatar{
-  width:22px;height:22px;border-radius:50%;
+  width:26px;height:26px;border-radius:50%;
   background:linear-gradient(135deg,var(--blue2),var(--blue));
   display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:700;color:#fff;flex-shrink:0;
+  font-size:12px;font-weight:700;color:#fff;flex-shrink:0;
 }
+.auth-info{display:flex;flex-direction:column;min-width:0;overflow:hidden;transition:opacity .2s;}
+#sb.col .auth-info{opacity:0;width:0;}
+.auth-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;color:var(--text);}
 .auth-rol{
   font-size:9px;text-transform:uppercase;letter-spacing:.4px;
-  padding:1px 6px;border-radius:4px;margin-left:4px;
+  padding:1px 6px;border-radius:4px;margin-top:2px;width:fit-content;
   background:rgba(79,127,255,.12);color:var(--ice);
 }
 .btn-ghost{
   background:none;border:1px solid var(--border2);color:var(--soft);
-  border-radius:999px;padding:8px 16px;font-size:12px;font-weight:600;
-  cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s;
+  border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;
+  cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s;width:100%;
 }
+#sb.col .btn-ghost{padding:7px 6px;font-size:10px;}
 .btn-ghost:hover{border-color:var(--blue);color:var(--blue);}
 .btn-link{background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;font-family:'Inter',sans-serif;text-decoration:underline;padding:0;}
 .btn-link:hover{color:var(--text);}
@@ -401,12 +404,38 @@ tbody td{padding:12px;}
 .ml-pred{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:12px;color:var(--soft);border-bottom:1px solid var(--border);}
 .ml-pred:last-child{border-bottom:none;}
 .ml-pred b{color:var(--text);font-weight:500;}
+
+/* ── ADMIN: sub-secciones nuevas ──────────────────── */
+.admin-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+.admin-tab{
+  background:var(--surf2);border:1px solid var(--border);color:var(--muted);
+  border-radius:999px;padding:7px 14px;font-size:12px;font-weight:600;
+  cursor:pointer;font-family:'Inter',sans-serif;
+}
+.admin-tab.on{background:rgba(79,127,255,.1);border-color:var(--blue);color:var(--blue);}
+.admin-sub{display:none;}
+.admin-sub.on{display:block;}
+.inline-form{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center;}
+.inline-form input,.inline-form select{
+  background:var(--surf2);border:1px solid var(--border);color:var(--text);
+  border-radius:8px;padding:8px 10px;font-family:'Inter',sans-serif;font-size:12px;
+}
+.correccion-card{background:var(--surf2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;}
+.correccion-row{display:flex;justify-content:space-between;gap:12px;margin-bottom:6px;}
+.correccion-meta{font-size:11px;color:var(--muted);}
+.correccion-txt{font-size:13px;color:var(--soft);margin:8px 0;line-height:1.5;}
+.correccion-btns{display:flex;gap:8px;margin-top:8px;}
+.btn-approve{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.4);color:var(--green);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+.btn-reject{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.4);color:var(--red);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+
+/* ── MI CUENTA ─────────────────────────────────────── */
+.cuenta-grid{display:grid;grid-template-columns:280px 1fr;gap:16px;align-items:start;}
+.cuenta-field{margin-bottom:10px;}
+.cuenta-field label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px;}
+.cuenta-field input{width:100%;background:var(--surf2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 12px;font-family:'Inter',sans-serif;font-size:13px;}
 </style>
 </head>
 <body>
-
-<!-- AUTH BAR -->
-<div id="authBar"></div>
 
 <!-- MODAL LOGIN / REGISTRO -->
 <div class="modal-overlay" id="authModal">
@@ -437,13 +466,15 @@ tbody td{padding:12px;}
   </div>
   <button class="sb-nav on" onclick="go('home',this)"><span class="sb-icon">⊞</span><span class="sb-lbl">Inicio</span></button>
   <button class="sb-nav" onclick="go('diag',this)"><span class="sb-icon">◈</span><span class="sb-lbl">Diagnóstico</span></button>
-  <button class="sb-nav" onclick="go('fallas',this)"><span class="sb-icon">⚠</span><span class="sb-lbl">Fallas</span></button>
-  <button class="sb-nav" onclick="go('arbol',this)"><span class="sb-icon">◫</span><span class="sb-lbl">Árbol visual</span></button>
+  <button class="sb-nav" onclick="go('fallas',this)" id="navFallas" style="display:none;"><span class="sb-icon">⚠</span><span class="sb-lbl">Fallas</span></button>
+  <button class="sb-nav" onclick="go('arbol',this)" id="navArbol" style="display:none;"><span class="sb-icon">◫</span><span class="sb-lbl">Árbol visual</span></button>
   <button class="sb-nav" onclick="go('stats',this)"><span class="sb-icon">▦</span><span class="sb-lbl">Estadísticas</span></button>
+  <button class="sb-nav" onclick="go('cuenta',this)" id="navCuenta" style="display:none;"><span class="sb-icon">◔</span><span class="sb-lbl">Mi cuenta</span></button>
   <button class="sb-nav" onclick="go('admin',this)" id="navAdmin" style="display:none;"><span class="sb-icon">⚙</span><span class="sb-lbl">Admin</span></button>
   <div class="sb-foot">
+    <div id="authBar"></div>
     <span class="dot"></span>Sistema activo<br>
-    <span style="opacity:.5">v2.0 · MySQL · DS</span>
+    <span style="opacity:.5">v3.0 · MySQL · DS</span>
   </div>
 </div>
 
@@ -519,11 +550,7 @@ tbody td{padding:12px;}
       <div><div class="pg-title">Árbol visual</div><div class="pg-sub">Mapa completo de decisiones</div></div>
     </div>
     <div class="tree-ctrl">
-      <select class="tree-sel" id="arbolSel" onchange="renderTree(this.value)">
-        <option>Refrigerador</option><option>Congelador</option>
-        <option>Aire Acondicionado</option><option>Enfriador Comercial</option>
-        <option>Cuarto Frío</option>
-      </select>
+      <select class="tree-sel" id="arbolSel" onchange="renderTree(this.value)"></select>
     </div>
     <div class="tree-scroll"><svg id="treeSvg" style="display:block;margin:0 auto;"></svg></div>
     <div class="tree-legend">
@@ -562,40 +589,124 @@ tbody td{padding:12px;}
     </div>
   </div>
 
+  <!-- MI CUENTA -->
+  <div class="page" id="page-cuenta">
+    <div class="topbar">
+      <div><div class="pg-title">Mi cuenta</div><div class="pg-sub">Tu perfil y tu historial de diagnósticos</div></div>
+    </div>
+    <div class="cuenta-grid">
+      <div class="card">
+        <div class="card-title">Perfil</div>
+        <div id="cuentaPerfil"></div>
+        <div class="card-title" style="margin-top:20px;">Cambiar contraseña</div>
+        <div class="admin-msg" id="cuentaMsg"></div>
+        <div class="cuenta-field"><label>Contraseña actual</label><input type="password" id="cuentaActual"></div>
+        <div class="cuenta-field"><label>Contraseña nueva</label><input type="password" id="cuentaNueva" placeholder="Mínimo 6 caracteres"></div>
+        <button class="btn-sec" onclick="cambiarPasswordCuenta()">Actualizar contraseña</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Mis diagnósticos recientes</div>
+        <table>
+          <thead><tr><th>Fecha</th><th>Equipo</th><th>Falla</th><th>Prob.</th><th>Resultado</th></tr></thead>
+          <tbody id="cuentaSesiones"><tr><td colspan="5" class="no-data">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
   <!-- ADMIN -->
   <div class="page" id="page-admin">
     <div class="topbar">
-      <div><div class="pg-title">Panel de administración</div><div class="pg-sub">Editar árbol de decisiones y usuarios</div></div>
+      <div><div class="pg-title">Panel de administración</div><div class="pg-sub">Árbol, equipos, fallas, usuarios y moderación</div></div>
     </div>
-    <div class="card" style="margin-bottom:16px;">
-      <div class="card-title">Árbol de decisiones</div>
-      <div class="admin-cols">
-        <div class="admin-side" id="adminEqList"></div>
-        <div>
-          <div class="admin-msg" id="adminMsg"></div>
-          <div id="adminNodos"><p class="no-data">Selecciona un equipo.</p></div>
-          <button class="btn-sec" id="btnNuevoNodo" style="display:none;" onclick="crearNodoRaiz()">+ Nodo raíz para este equipo</button>
+    <div class="admin-tabs">
+      <button class="admin-tab on" data-tab="arbol" onclick="adminTab('arbol',this)">🌳 Árbol</button>
+      <button class="admin-tab" data-tab="equipos" onclick="adminTab('equipos',this)">🧊 Equipos</button>
+      <button class="admin-tab" data-tab="fallas" onclick="adminTab('fallas',this)">⚠ Fallas</button>
+      <button class="admin-tab" data-tab="correcciones" onclick="adminTab('correcciones',this)">🛡 Correcciones <span id="correccionesBadge"></span></button>
+      <button class="admin-tab" data-tab="usuarios" onclick="adminTab('usuarios',this)">👥 Usuarios</button>
+    </div>
+
+    <div class="admin-sub on" id="admin-sub-arbol">
+      <div class="card">
+        <div class="card-title">Árbol de decisiones</div>
+        <div class="admin-cols">
+          <div class="admin-side" id="adminEqList"></div>
+          <div>
+            <div class="admin-msg" id="adminMsg"></div>
+            <div id="adminNodos"><p class="no-data">Selecciona un equipo.</p></div>
+            <button class="btn-sec" id="btnNuevoNodo" style="display:none;" onclick="crearNodoRaiz()">+ Nodo raíz para este equipo</button>
+          </div>
         </div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-title">Usuarios y roles</div>
-      <table>
-        <thead><tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Activo</th></tr></thead>
-        <tbody id="adminUsuarios"></tbody>
-      </table>
+
+    <div class="admin-sub" id="admin-sub-equipos">
+      <div class="card">
+        <div class="card-title">Máquinas / tipos de equipo</div>
+        <div class="admin-msg" id="equiposMsg"></div>
+        <div class="inline-form">
+          <input type="text" id="nuevoEqNombre" placeholder="Nombre (ej. Vitrina refrigerada)">
+          <input type="text" id="nuevoEqIcono" placeholder="Ícono (ej. 🧊)" style="width:90px;">
+          <button class="btn-sec" onclick="crearEquipoAdmin()">+ Agregar equipo</button>
+        </div>
+        <table>
+          <thead><tr><th>Ícono</th><th>Nombre</th><th></th></tr></thead>
+          <tbody id="equiposTabla"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="admin-sub" id="admin-sub-fallas">
+      <div class="card">
+        <div class="card-title">Catálogo de fallas</div>
+        <div class="admin-msg" id="fallasAdminMsg"></div>
+        <div class="inline-form">
+          <input type="text" id="nuevaFallaNombre" placeholder="Nombre de la falla">
+          <select id="nuevaFallaSeveridad">
+            <option value="baja">Severidad: baja</option>
+            <option value="media" selected>Severidad: media</option>
+            <option value="alta">Severidad: alta</option>
+          </select>
+          <input type="text" id="nuevaFallaEquipos" placeholder="Equipos (ej. Ref,Cong,AA)" style="width:170px;">
+          <button class="btn-sec" onclick="crearFallaAdmin()">+ Agregar falla</button>
+        </div>
+        <table>
+          <thead><tr><th>Nombre</th><th>Severidad</th><th>Equipos</th><th>Usos</th><th></th></tr></thead>
+          <tbody id="fallasAdminTabla"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="admin-sub" id="admin-sub-correcciones">
+      <div class="card">
+        <div class="card-title">Correcciones de usuarios pendientes de revisión</div>
+        <div class="pg-sub" style="margin-bottom:12px;">Aprueba solo lo que confirmes razonable: una corrección aprobada alimenta el reentrenamiento de la IA en vivo.</div>
+        <div id="correccionesList"><p class="no-data">Cargando…</p></div>
+      </div>
+    </div>
+
+    <div class="admin-sub" id="admin-sub-usuarios">
+      <div class="card">
+        <div class="card-title">Usuarios y roles</div>
+        <table>
+          <thead><tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Activo</th><th></th></tr></thead>
+          <tbody id="adminUsuarios"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
 </div><!-- end #main -->
 
 <script>
-/* ── DATOS ESTÁTICOS ─────────────────────────────── */
-const EQS = [
-  {n:'Refrigerador',i:'🧊'},{n:'Congelador',i:'🥶'},
-  {n:'Aire Acondicionado',i:'💨'},{n:'Enfriador Comercial',i:'🏪'},
-  {n:'Cuarto Frío',i:'🏭'}
+/* ── DATOS DINÁMICOS (con respaldo estático si la BD no responde) ── */
+let EQS = [
+  {id:1,n:'Refrigerador',i:'🧊'},{id:2,n:'Congelador',i:'🥶'},
+  {id:3,n:'Aire Acondicionado',i:'💨'},{id:4,n:'Enfriador Comercial',i:'🏪'},
+  {id:5,n:'Cuarto Frío',i:'🏭'}
 ];
+let FALLAS_DYN = [];
 const FALLAS_S = [
   {id:1,nombre:"Fuga de refrigerante",sev:"alta",eq:"Ref,Cong,AA,EC,CF"},
   {id:2,nombre:"Capilar obstruido",sev:"media",eq:"Ref,Cong,EC"},
@@ -639,9 +750,37 @@ function go(id, el, skipReset){
   document.getElementById('page-'+id).classList.add('on');
   if(el) el.classList.add('on');
   if(id==='fallas') loadFallas();
-  if(id==='arbol') renderTree('Refrigerador');
+  if(id==='arbol') renderTree((EQS[0]&&EQS[0].n)||'Refrigerador');
   if(id==='stats') loadStats();
+  if(id==='cuenta') loadCuenta();
   if(id==='admin') loadAdmin();
+}
+
+/* ── EQUIPOS: carga dinámica desde la BD ──────────── */
+async function cargarEquipos(){
+  try{
+    const r = await fetch('/api/equipos');
+    const d = await r.json();
+    if(Array.isArray(d) && d.length){
+      EQS = d.map(e=>({id:e.id, n:e.nombre, i:e.icono||'🔧'}));
+    }
+  }catch{ /* se mantiene el respaldo estático de EQS */ }
+  const sel = document.getElementById('arbolSel');
+  if(sel){
+    sel.innerHTML = EQS.map(e=>`<option>${e.n}</option>`).join('');
+  }
+  const seq = document.getElementById('s-eq');
+  if(seq) seq.textContent = EQS.length;
+}
+
+async function cargarFallasDyn(){
+  try{
+    const r = await fetch('/api/fallas');
+    const d = await r.json();
+    if(Array.isArray(d) && d.length) FALLAS_DYN = d;
+  }catch{ /* se mantiene FALLAS_S como respaldo en showResult() */ }
+  const sfl = document.getElementById('s-fl');
+  if(sfl && FALLAS_DYN.length) sfl.textContent = FALLAS_DYN.length;
 }
 
 /* ── EQ GRIDS ────────────────────────────────────── */
@@ -665,7 +804,7 @@ let curEq='', curNode=null, path=[], sesId=null, fbDone=false, curEqId=null;
 
 async function startDiag(eq){
   curEq=eq; path=[]; sesId=null; fbDone=false;
-  curEqId = EQS.findIndex(e=>e.n===eq)+1;
+  curEqId = (EQS.find(e=>e.n===eq)||{}).id || (EQS.findIndex(e=>e.n===eq)+1);
   document.getElementById('eqSel').style.display='none';
   document.getElementById('diagWrap').style.display='block';
   document.getElementById('rArea').style.display='none';
@@ -722,7 +861,7 @@ function showResult(res){
   const pc=res.prob>=85?'ph':res.prob>=70?'pm':'pl';
   const pl=res.prob>=85?'🔴 Alta confianza':res.prob>=70?'🟡 Media confianza':'🟢 Baja confianza';
   const tags=(res.tags||[]).map(t=>`<span class="rtag">${t}</span>`).join('');
-  const fallaOpts = FALLAS_S.map(f=>`<option value="${f.id}">${f.nombre}</option>`).join('');
+  const fallaOpts = (FALLAS_DYN.length?FALLAS_DYN:FALLAS_S).map(f=>`<option value="${f.id}">${f.nombre}</option>`).join('');
 
   document.getElementById('rArea').innerHTML=`
     <div class="result-box">
@@ -835,7 +974,10 @@ function reset(){
 /* ── FALLAS ──────────────────────────────────────── */
 async function loadFallas(){
   let fallas=FALLAS_S;
-  try{ const r=await fetch('/api/fallas'); const d=await r.json(); if(Array.isArray(d)) fallas=d.map(f=>({...f,eq:f.equipos_tag})); }catch{}
+  try{
+    const r=await fetch('/api/fallas'); const d=await r.json();
+    if(Array.isArray(d) && d.length){ FALLAS_DYN=d; fallas=d.map(f=>({...f,eq:f.equipos_tag})); }
+  }catch{}
   document.getElementById('fallasTable').innerHTML=fallas.map((f,i)=>`
     <tr>
       <td style="color:var(--muted);font-size:11px;">${String(i+1).padStart(2,'0')}</td>
@@ -990,24 +1132,47 @@ async function checkAuth(){
 function updateAuthUI(){
   const bar = document.getElementById('authBar');
   const navAdmin = document.getElementById('navAdmin');
+  const navFallas = document.getElementById('navFallas');
+  const navArbol = document.getElementById('navArbol');
+  const navCuenta = document.getElementById('navCuenta');
+  const esPrivilegiado = !!currentUser && (currentUser.rol==='admin' || currentUser.rol==='tecnico');
+
   if(currentUser){
     const inicial = (currentUser.nombre||'?').trim().charAt(0).toUpperCase();
     bar.innerHTML = `
       <div class="auth-chip">
         <span class="auth-avatar">${inicial}</span>
-        <span>${currentUser.nombre}</span>
-        <span class="auth-rol">${currentUser.rol}</span>
+        <span class="auth-info">
+          <span class="auth-name">${currentUser.nombre}</span>
+          <span class="auth-rol">${currentUser.rol}</span>
+        </span>
       </div>
       <button class="btn-ghost" onclick="doLogout()">Salir</button>`;
     navAdmin.style.display = currentUser.rol==='admin' ? '' : 'none';
+    navCuenta.style.display = '';
   }else{
     bar.innerHTML = `<button class="btn-ghost" onclick="openAuthModal('login')">Iniciar sesión</button>`;
     navAdmin.style.display = 'none';
-    // Si estaba en la página admin y se deslogueó, regresar a inicio
-    if(document.getElementById('page-admin').classList.contains('on')){
-      go('home', document.querySelectorAll('.sb-nav')[0]);
-    }
+    navCuenta.style.display = 'none';
   }
+
+  // Fallas y Árbol visual son material técnico: solo técnico/admin las ven.
+  // Estadísticas queda visible para todos, como pidió el usuario.
+  navFallas.style.display = esPrivilegiado ? '' : 'none';
+  navArbol.style.display = esPrivilegiado ? '' : 'none';
+
+  // Si la página activa ya no debería ser visible para este rol (o si se
+  // deslogueó), regresar a inicio en vez de dejar una página vacía/oculta.
+  const activa = document.querySelector('.page.on');
+  const idActiva = activa ? activa.id.replace('page-','') : '';
+  const yaNoPermitido =
+    (idActiva==='admin' && !(currentUser && currentUser.rol==='admin')) ||
+    (idActiva==='cuenta' && !currentUser) ||
+    ((idActiva==='fallas' || idActiva==='arbol') && !esPrivilegiado);
+  if(yaNoPermitido){
+    go('home', document.querySelectorAll('.sb-nav')[0]);
+  }
+
   renderStatsBtns();
 }
 
@@ -1059,9 +1224,73 @@ async function doLogout(){
   updateAuthUI();
 }
 
+/* ── MI CUENTA ────────────────────────────────────── */
+async function loadCuenta(){
+  if(!currentUser) return;
+  const inicial = (currentUser.nombre||'?').trim().charAt(0).toUpperCase();
+  document.getElementById('cuentaPerfil').innerHTML = `
+    <div class="auth-chip" style="margin-bottom:10px;">
+      <span class="auth-avatar" style="width:40px;height:40px;font-size:16px;">${inicial}</span>
+      <span class="auth-info" style="opacity:1;width:auto;">
+        <span class="auth-name" style="font-size:14px;">${currentUser.nombre}</span>
+        <span class="auth-rol">${currentUser.rol}</span>
+      </span>
+    </div>
+    <div style="font-size:12px;color:var(--muted);">${currentUser.email}</div>`;
+  document.getElementById('cuentaActual').value='';
+  document.getElementById('cuentaNueva').value='';
+
+  const tbody = document.getElementById('cuentaSesiones');
+  tbody.innerHTML = `<tr><td colspan="5" class="no-data">Cargando…</td></tr>`;
+  try{
+    const r = await fetch('/api/mis-sesiones');
+    const d = await r.json();
+    if(!r.ok) throw new Error(d.error||'');
+    if(!Array.isArray(d) || !d.length){
+      tbody.innerHTML = `<tr><td colspan="5" class="no-data">Todavía no tienes diagnósticos guardados.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = d.map(s=>`
+      <tr>
+        <td style="font-size:12px;color:var(--muted);">${s.fecha||'—'}</td>
+        <td>${s.equipo}</td>
+        <td>${s.falla}</td>
+        <td>${s.probabilidad!=null?s.probabilidad+'%':'—'}</td>
+        <td>${s.fue_correcto===true?'✓ Confirmado':s.fue_correcto===false?'✗ Corregido':'— Sin evaluar'}</td>
+      </tr>`).join('');
+  }catch(e){
+    tbody.innerHTML = `<tr><td colspan="5" class="no-data">No se pudo cargar tu historial.</td></tr>`;
+  }
+}
+async function cambiarPasswordCuenta(){
+  const actual = document.getElementById('cuentaActual').value;
+  const nueva = document.getElementById('cuentaNueva').value;
+  const el = document.getElementById('cuentaMsg');
+  try{
+    const r = await fetch('/api/auth/password',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({actual,nueva})});
+    const d = await r.json();
+    el.textContent = r.ok ? 'Contraseña actualizada.' : (d.error||'No se pudo actualizar.');
+    el.className = 'admin-msg ' + (r.ok?'ok':'err');
+    if(r.ok){ document.getElementById('cuentaActual').value=''; document.getElementById('cuentaNueva').value=''; }
+  }catch{
+    el.textContent = 'Error de red.'; el.className = 'admin-msg err';
+  }
+  setTimeout(()=>{ el.textContent=''; }, 4000);
+}
+
 /* ── ADMIN: árbol dinámico ───────────────────────── */
 let adminEquipoActual = null;
 let adminFallasCache = [];
+
+function adminTab(id, el){
+  document.querySelectorAll('.admin-sub').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('admin-sub-'+id).classList.add('on');
+  if(el) el.classList.add('on');
+  if(id==='equipos') cargarEquiposAdminTabla();
+  if(id==='fallas') cargarFallasAdminTabla();
+  if(id==='correcciones') cargarCorrecciones();
+}
 
 async function loadAdmin(){
   const eqs = await (await fetch('/api/admin/equipos')).json().catch(()=>[]);
@@ -1070,6 +1299,146 @@ async function loadAdmin(){
     `<button class="admin-eq-btn" data-id="${e.id}" onclick="seleccionarEquipoAdmin(${e.id},this)">${e.icono||''} ${e.nombre}</button>`
   ).join('');
   await loadUsuarios();
+  await cargarConteoCorrecciones();
+}
+
+/* ── ADMIN: equipos (máquinas) ────────────────────── */
+async function cargarEquiposAdminTabla(){
+  const eqs = await (await fetch('/api/admin/equipos')).json().catch(()=>[]);
+  document.getElementById('equiposTabla').innerHTML = eqs.map(e=>`
+    <tr>
+      <td><input type="text" value="${escAttr(e.icono||'')}" style="width:60px;" onchange="editarEquipoAdmin(${e.id},'icono',this.value)"></td>
+      <td><input type="text" value="${escAttr(e.nombre)}" onchange="editarEquipoAdmin(${e.id},'nombre',this.value)"></td>
+      <td><button class="op-mini" title="Borrar equipo" onclick="eliminarEquipoAdmin(${e.id})">✕</button></td>
+    </tr>`).join('') || `<tr><td colspan="3" class="no-data">Sin equipos registrados.</td></tr>`;
+}
+function mensajeEquipos(msg, ok){
+  const el = document.getElementById('equiposMsg');
+  el.textContent = msg; el.className = 'admin-msg ' + (ok?'ok':'err');
+  setTimeout(()=>{ el.textContent=''; }, 4000);
+}
+async function crearEquipoAdmin(){
+  const nombre = document.getElementById('nuevoEqNombre').value.trim();
+  const icono = document.getElementById('nuevoEqIcono').value.trim();
+  if(!nombre){ mensajeEquipos('El nombre es obligatorio.', false); return; }
+  const r = await fetch('/api/admin/equipos',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nombre,icono})});
+  const d = await r.json();
+  mensajeEquipos(r.ok?'Equipo agregado. Créale un nodo raíz en la pestaña Árbol.':d.error, r.ok);
+  if(r.ok){
+    document.getElementById('nuevoEqNombre').value='';
+    document.getElementById('nuevoEqIcono').value='';
+    cargarEquiposAdminTabla();
+    cargarEquipos();
+    loadAdmin();
+  }
+}
+async function editarEquipoAdmin(id, campo, valor){
+  const r = await fetch('/api/admin/equipos/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({[campo]:valor})});
+  const d = await r.json();
+  mensajeEquipos(r.ok?'Guardado.':d.error, r.ok);
+  if(r.ok){ cargarEquipos(); loadAdmin(); }
+}
+async function eliminarEquipoAdmin(id){
+  if(!confirm('¿Borrar este equipo? Solo se puede si no tiene árbol ni diagnósticos.')) return;
+  const r = await fetch('/api/admin/equipos/'+id,{method:'DELETE'});
+  const d = await r.json();
+  mensajeEquipos(r.ok?'Equipo borrado.':d.error, r.ok);
+  if(r.ok){ cargarEquiposAdminTabla(); cargarEquipos(); loadAdmin(); }
+}
+
+/* ── ADMIN: fallas (catálogo) ─────────────────────── */
+async function cargarFallasAdminTabla(){
+  const fallas = await (await fetch('/api/admin/fallas')).json().catch(()=>[]);
+  document.getElementById('fallasAdminTabla').innerHTML = fallas.map(f=>`
+    <tr>
+      <td><input type="text" value="${escAttr(f.nombre)}" onchange="editarFallaAdmin(${f.id},'nombre',this.value)"></td>
+      <td>
+        <select onchange="editarFallaAdmin(${f.id},'severidad',this.value)">
+          ${['baja','media','alta'].map(s=>`<option value="${s}" ${s===f.severidad?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </td>
+      <td><input type="text" value="${escAttr(f.equipos_tag||'')}" onchange="editarFallaAdmin(${f.id},'equipos_tag',this.value)"></td>
+      <td style="color:var(--muted);font-size:12px;">${f.veces_diagnosticada||0}</td>
+      <td><button class="op-mini" title="Borrar falla" onclick="eliminarFallaAdmin(${f.id})">✕</button></td>
+    </tr>`).join('') || `<tr><td colspan="5" class="no-data">Sin fallas registradas.</td></tr>`;
+}
+function mensajeFallasAdmin(msg, ok){
+  const el = document.getElementById('fallasAdminMsg');
+  el.textContent = msg; el.className = 'admin-msg ' + (ok?'ok':'err');
+  setTimeout(()=>{ el.textContent=''; }, 4000);
+}
+async function crearFallaAdmin(){
+  const nombre = document.getElementById('nuevaFallaNombre').value.trim();
+  const severidad = document.getElementById('nuevaFallaSeveridad').value;
+  const equipos_tag = document.getElementById('nuevaFallaEquipos').value.trim();
+  if(!nombre){ mensajeFallasAdmin('El nombre es obligatorio.', false); return; }
+  const r = await fetch('/api/admin/fallas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nombre,severidad,equipos_tag})});
+  const d = await r.json();
+  mensajeFallasAdmin(r.ok?'Falla agregada.':d.error, r.ok);
+  if(r.ok){
+    document.getElementById('nuevaFallaNombre').value='';
+    document.getElementById('nuevaFallaEquipos').value='';
+    cargarFallasAdminTabla();
+    cargarFallasDyn();
+  }
+}
+async function editarFallaAdmin(id, campo, valor){
+  const r = await fetch('/api/admin/fallas/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({[campo]:valor})});
+  const d = await r.json();
+  mensajeFallasAdmin(r.ok?'Guardado.':d.error, r.ok);
+  if(r.ok) cargarFallasDyn();
+}
+async function eliminarFallaAdmin(id){
+  if(!confirm('¿Borrar esta falla? Solo se puede si no está en uso en el árbol, soluciones o diagnósticos.')) return;
+  const r = await fetch('/api/admin/fallas/'+id,{method:'DELETE'});
+  const d = await r.json();
+  mensajeFallasAdmin(r.ok?'Falla borrada.':d.error, r.ok);
+  if(r.ok){ cargarFallasAdminTabla(); cargarFallasDyn(); }
+}
+
+/* ── ADMIN: correcciones (moderación anti-datos-falsos) ── */
+async function cargarConteoCorrecciones(){
+  try{
+    const d = await (await fetch('/api/admin/correcciones?pendientes=1')).json();
+    const badge = document.getElementById('correccionesBadge');
+    if(badge) badge.textContent = Array.isArray(d) && d.length ? `(${d.length})` : '';
+  }catch{}
+}
+async function cargarCorrecciones(){
+  const cont = document.getElementById('correccionesList');
+  cont.innerHTML = '<p class="no-data">Cargando…</p>';
+  const correcciones = await (await fetch('/api/admin/correcciones?pendientes=1')).json().catch(()=>[]);
+  if(!correcciones.length){
+    cont.innerHTML = '<p class="no-data">No hay correcciones pendientes de revisión.</p>';
+    return;
+  }
+  cont.innerHTML = correcciones.map(c=>`
+    <div class="correccion-card" data-id="${c.id}">
+      <div class="correccion-row">
+        <div class="correccion-meta">${c.equipo||'—'} · diagnóstico del árbol: <b style="color:var(--text)">${c.falla_diagnosticada||'—'}</b></div>
+        <div class="correccion-meta">${c.created_at||''} · usuario: ${c.nivel_usuario||'normal'}</div>
+      </div>
+      <div>Falla real reportada: <b style="color:var(--ice)">${c.falla_correcta||'(no especificó cuál)'}</b></div>
+      ${c.descripcion_libre?`<div class="correccion-txt">"${c.descripcion_libre}"</div>`:''}
+      <div class="correccion-btns">
+        <button class="btn-approve" onclick="revisarCorreccionAdmin(${c.id},true,this)">✓ Aprobar</button>
+        <button class="btn-reject" onclick="revisarCorreccionAdmin(${c.id},false,this)">✗ Rechazar</button>
+      </div>
+    </div>`).join('');
+}
+async function revisarCorreccionAdmin(id, aprobar, btn){
+  const card = btn.closest('.correccion-card');
+  try{
+    const r = await fetch('/api/admin/correcciones/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({aprobar})});
+    const d = await r.json();
+    if(!r.ok){ alert(d.error||'No se pudo procesar.'); return; }
+    if(card) card.remove();
+    cargarConteoCorrecciones();
+    const cont = document.getElementById('correccionesList');
+    if(cont && !cont.querySelector('.correccion-card')){
+      cont.innerHTML = '<p class="no-data">No hay correcciones pendientes de revisión.</p>';
+    }
+  }catch{ alert('Error de red.'); }
 }
 
 async function seleccionarEquipoAdmin(equipoId, el){
@@ -1187,22 +1556,33 @@ async function eliminarOpcionAdmin(opcionId){
 /* ── ADMIN: usuarios ─────────────────────────────── */
 async function loadUsuarios(){
   const usuarios = await (await fetch('/api/admin/usuarios')).json().catch(()=>[]);
-  document.getElementById('adminUsuarios').innerHTML = usuarios.map(u=>`
+  document.getElementById('adminUsuarios').innerHTML = usuarios.map(u=>{
+    const esYo = currentUser && u.id===currentUser.id;
+    return `
     <tr>
-      <td>${u.nombre}</td>
+      <td>${u.nombre}${esYo?' <span class="badge badge-blue" style="padding:1px 6px;font-size:9px;">tú</span>':''}</td>
       <td style="color:var(--muted);font-size:12px;">${u.email}</td>
       <td>
-        <select class="tree-sel" style="padding:4px 8px;font-size:12px;" onchange="cambiarRolUsuario(${u.id},this.value)">
+        <select class="tree-sel" style="padding:4px 8px;font-size:12px;" ${esYo?'disabled':''} onchange="cambiarRolUsuario(${u.id},this.value)">
           ${['normal','tecnico','admin'].map(r=>`<option value="${r}" ${r===u.rol?'selected':''}>${r}</option>`).join('')}
         </select>
       </td>
       <td>
-        <select class="tree-sel" style="padding:4px 8px;font-size:12px;" onchange="cambiarActivoUsuario(${u.id},this.value)">
+        <select class="tree-sel" style="padding:4px 8px;font-size:12px;" ${esYo?'disabled':''} onchange="cambiarActivoUsuario(${u.id},this.value)">
           <option value="1" ${u.activo?'selected':''}>Sí</option>
           <option value="0" ${!u.activo?'selected':''}>No</option>
         </select>
       </td>
-    </tr>`).join('');
+      <td>${esYo?'':`<button class="op-mini" title="Eliminar usuario" onclick="eliminarUsuarioAdmin(${u.id})">✕</button>`}</td>
+    </tr>`;
+  }).join('');
+}
+async function eliminarUsuarioAdmin(id){
+  if(!confirm('¿Eliminar este usuario? Su historial de diagnósticos se conserva, pero quedará sin autor.')) return;
+  const r = await fetch('/api/admin/usuarios/'+id,{method:'DELETE'});
+  const d = await r.json();
+  mensajeAdmin(r.ok?'Usuario eliminado.':d.error, r.ok);
+  if(r.ok) loadUsuarios();
 }
 async function cambiarRolUsuario(id, rol){
   const r = await fetch('/api/admin/usuarios/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({rol})});
@@ -1218,8 +1598,11 @@ function escAttr(s){ return String(s??'').replace(/&/g,'&amp;').replace(/"/g,'&q
 
 /* ── INIT ────────────────────────────────────────── */
 async function init(){
+  await cargarEquipos();
   buildGrids();
+  cargarFallasDyn();
   await checkAuth();
+  if(currentUser && currentUser.rol==='admin') cargarConteoCorrecciones();
   const b=document.getElementById('bdBadge');
   try{
     const r=await fetch('/api/stats'); const d=await r.json();
