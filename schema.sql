@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS `equipos` (
   `id`     INT          NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(100) NOT NULL,
   `icono`  VARCHAR(10)  DEFAULT '🔧',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_equipos_nombre` (`nombre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `equipos` (`nombre`, `icono`) VALUES
@@ -83,7 +84,8 @@ CREATE TABLE IF NOT EXISTS `fallas` (
   `equipos_tag` VARCHAR(200) DEFAULT NULL,
   `veces_diagnosticada` INT DEFAULT 0,
   `veces_correcta`      INT DEFAULT 0,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_fallas_nombre` (`nombre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ── Opciones de cada nodo ────────────────────────────────────
@@ -197,7 +199,8 @@ INSERT INTO `soluciones` (`falla_id`, `descripcion`, `tags`) VALUES
 (15, 'Verificar calibración del sensor con termómetro de referencia. Reemplazar si necesario.',               'Control,Electrónico'),
 (16, 'Verificar continuidad de resistencias anti-vaho. Medir voltaje de alimentación.',                        'Eléctrico,Anti-vaho'),
 (17, 'Revisar fusibles del tablero. Verificar breaker. Comprobar voltaje en tomacorriente.',                   'Eléctrico,Instalación'),
-(18, 'Lubricar o reemplazar motor del ventilador. Verificar desbalance en aspas.',                             'Mecánico,Rodamientos');
+(18, 'Lubricar o reemplazar motor del ventilador. Verificar desbalance en aspas.',                             'Mecánico,Rodamientos')
+ON DUPLICATE KEY UPDATE `tags`=VALUES(`tags`);
 
 -- ============================================================
 --  MIGRACIÓN IDEMPOTENTE (schema v2 -> v3)
@@ -231,6 +234,115 @@ SET @col_existe = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
   WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'sesiones' AND COLUMN_NAME = 'usuario_id');
 SET @sql = IF(@col_existe = 0,
   'ALTER TABLE `sesiones` ADD COLUMN `usuario_id` INT DEFAULT NULL, ADD KEY `usuario_id` (`usuario_id`), ADD CONSTRAINT `sesiones_ibfk_3` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)',
+  'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- ============================================================
+--  MIGRACIÓN IDEMPOTENTE (schema v3 -> v3.1)
+--  Bug corregido: los INSERT de `equipos` y `fallas` de más arriba
+--  usaban "ON DUPLICATE KEY UPDATE" pero ninguna de las dos tablas
+--  tenía una UNIQUE KEY en `nombre` que lo hiciera funcionar, así que
+--  cada vez que se volvía a correr schema.sql (algo que este mismo
+--  proyecto ha necesitado hacer varias veces) se insertaban de nuevo
+--  los 5 equipos y las 18 fallas "de fábrica" como filas duplicadas.
+--  Esto se ve, por ejemplo, como tarjetas de equipo repetidas en
+--  "Acceso rápido".
+--
+--  Los bloques de abajo son seguros de correr las veces que quieras:
+--  1) Fusionan cualquier duplicado que ya exista (reasignando primero
+--     las referencias de otras tablas al registro más antiguo).
+--  2) Agregan la UNIQUE KEY que faltaba, así que a partir de ahora un
+--     futuro re-run de este archivo ya no vuelve a duplicar nada.
+-- ============================================================
+
+-- Fusionar equipos duplicados (mismo nombre) hacia el de menor id.
+UPDATE `nodos` n
+  JOIN `equipos` dup ON n.equipo_id = dup.id
+  JOIN `equipos` ok  ON ok.nombre = dup.nombre AND ok.id < dup.id
+  SET n.equipo_id = ok.id;
+
+UPDATE `sesiones` s
+  JOIN `equipos` dup ON s.equipo_id = dup.id
+  JOIN `equipos` ok  ON ok.nombre = dup.nombre AND ok.id < dup.id
+  SET s.equipo_id = ok.id;
+
+DELETE dup FROM `equipos` dup
+  JOIN `equipos` ok ON ok.nombre = dup.nombre AND ok.id < dup.id;
+
+-- `equipos`.UNIQUE(nombre) — solo si todavía no existe
+SET @idx_existe = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS
+  WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'equipos' AND INDEX_NAME = 'uq_equipos_nombre');
+SET @sql = IF(@idx_existe = 0,
+  'ALTER TABLE `equipos` ADD UNIQUE KEY `uq_equipos_nombre` (`nombre`)',
+  'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- Fusionar fallas duplicadas (mismo nombre) hacia la de menor id,
+-- sumando primero sus contadores de uso real para no perder historial.
+UPDATE `fallas` ok
+  JOIN (
+    SELECT ok2.id AS ok_id,
+           SUM(dup2.veces_diagnosticada) AS suma_diag,
+           SUM(dup2.veces_correcta)      AS suma_correcta
+    FROM `fallas` dup2
+    JOIN `fallas` ok2 ON ok2.nombre = dup2.nombre AND ok2.id < dup2.id
+    GROUP BY ok2.id
+  ) t ON t.ok_id = ok.id
+  SET ok.veces_diagnosticada = ok.veces_diagnosticada + t.suma_diag,
+      ok.veces_correcta      = ok.veces_correcta + t.suma_correcta;
+
+UPDATE `opciones` o
+  JOIN `fallas` dup ON o.falla_id = dup.id
+  JOIN `fallas` ok  ON ok.nombre = dup.nombre AND ok.id < dup.id
+  SET o.falla_id = ok.id;
+
+UPDATE `sesiones` s
+  JOIN `fallas` dup ON s.falla_id = dup.id
+  JOIN `fallas` ok  ON ok.nombre = dup.nombre AND ok.id < dup.id
+  SET s.falla_id = ok.id;
+
+UPDATE `sesiones` s
+  JOIN `fallas` dup ON s.falla_real_id = dup.id
+  JOIN `fallas` ok  ON ok.nombre = dup.nombre AND ok.id < dup.id
+  SET s.falla_real_id = ok.id;
+
+UPDATE `correcciones` c
+  JOIN `fallas` dup ON c.falla_correcta_id = dup.id
+  JOIN `fallas` ok  ON ok.nombre = dup.nombre AND ok.id < dup.id
+  SET c.falla_correcta_id = ok.id;
+
+UPDATE `soluciones` so
+  JOIN `fallas` dup ON so.falla_id = dup.id
+  JOIN `fallas` ok  ON ok.nombre = dup.nombre AND ok.id < dup.id
+  SET so.falla_id = ok.id;
+
+DELETE dup FROM `fallas` dup
+  JOIN `fallas` ok ON ok.nombre = dup.nombre AND ok.id < dup.id;
+
+-- `fallas`.UNIQUE(nombre) — solo si todavía no existe
+SET @idx_existe = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS
+  WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'fallas' AND INDEX_NAME = 'uq_fallas_nombre');
+SET @sql = IF(@idx_existe = 0,
+  'ALTER TABLE `fallas` ADD UNIQUE KEY `uq_fallas_nombre` (`nombre`)',
+  'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- `soluciones`: el INSERT de "Datos iniciales" de más arriba no tenía
+-- ningún ON DUPLICATE KEY (ni una UNIQUE KEY sobre la que apoyarse), así
+-- que cada re-run también dejaba soluciones repetidas para la misma
+-- falla. Se limpian los duplicados exactos y se agrega la UNIQUE KEY
+-- (con un prefijo de la descripción, porque es un campo TEXT) para que
+-- no vuelva a pasar.
+DELETE dup FROM `soluciones` dup
+  JOIN `soluciones` ok
+    ON ok.falla_id = dup.falla_id
+   AND ok.descripcion = dup.descripcion
+   AND ok.id < dup.id;
+
+SET @idx_existe = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS
+  WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'soluciones' AND INDEX_NAME = 'uq_soluciones_falla_desc');
+SET @sql = IF(@idx_existe = 0,
+  'ALTER TABLE `soluciones` ADD UNIQUE KEY `uq_soluciones_falla_desc` (`falla_id`, `descripcion`(191))',
   'SELECT 1');
 PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
