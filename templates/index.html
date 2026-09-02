@@ -1220,15 +1220,23 @@ function escAttr(s){ return String(s??'').replace(/&/g,'&amp;').replace(/"/g,'&q
 async function init(){
   buildGrids();
   await checkAuth();
+  const b=document.getElementById('bdBadge');
   try{
     const r=await fetch('/api/stats'); const d=await r.json();
     if(!d.error){
-      const b=document.getElementById('bdBadge');
       b.textContent='● BD conectada'; b.className='badge badge-blue';
       document.getElementById('s-ses').textContent=d.total_sesiones;
       document.getElementById('s-prc').textContent=d.precision_global+'%';
+    }else{
+      b.textContent='● BD no disponible'; b.title=d.error||'';
+      document.getElementById('s-ses').textContent='—';
+      document.getElementById('s-prc').textContent='—';
     }
-  }catch{ document.getElementById('bdBadge').textContent='● BD no disponible'; }
+  }catch{
+    b.textContent='● BD no disponible';
+    document.getElementById('s-ses').textContent='—';
+    document.getElementById('s-prc').textContent='—';
+  }
 }
 
 /* ── UTILS ───────────────────────────────────────── */
