@@ -17,6 +17,12 @@ CREATE DATABASE IF NOT EXISTS `frostanalitic`
   CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE `frostanalitic`;
 
+-- MySQL Workbench trae activado "Safe Updates", que bloquea los UPDATE/DELETE
+-- con JOIN de la seccion de migracion (Error 1175) y deja el script a medias:
+-- los INSERT de arriba se ejecutan pero la fusion de duplicados no. Solo
+-- afecta a esta conexion.
+SET SQL_SAFE_UPDATES = 0;
+
 -- ── Equipos ──────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS `equipos` (
   `id`     INT          NOT NULL AUTO_INCREMENT,
