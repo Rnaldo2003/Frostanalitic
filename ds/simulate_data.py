@@ -135,26 +135,11 @@ with open(csv_path, "w", newline="", encoding="utf-8") as f:
     writer.writeheader()
     writer.writerows(rows)
 
-# ── Guardar SQL para MySQL Workbench ──────────────────────────
-sql_path = os.path.join(BASE, "insert_sesiones.sql")
-with open(sql_path, "w", encoding="utf-8") as f:
-    f.write(f"USE frostanalitic;\n-- {len(rows)} sesiones simuladas de diagnostico\n\n")
-    for r in rows:
-        camino = json.dumps({"sintoma": r["sintoma"]}).replace("'", "''")
-        fr     = r["falla_correcta_id"] if not r["fue_correcto"] else "NULL"
-        f.write(
-            f"INSERT INTO sesiones (equipo_id, falla_id, probabilidad, camino_json, "
-            f"fue_correcto, falla_real_id, nivel_usuario, created_at) VALUES "
-            f"({r['equipo_id']}, {r['falla_diagnosticada_id']}, {r['probabilidad']}, "
-            f"'{camino}', {r['fue_correcto']}, {fr}, '{r['nivel_usuario']}', '{r['fecha']}');\n"
-        )
-    f.write("\n-- Actualizar contadores de fallas\n")
-    f.write("UPDATE fallas f SET\n"
-            "  veces_diagnosticada = (SELECT COUNT(*) FROM sesiones s WHERE s.falla_id = f.id),\n"
-            "  veces_correcta      = (SELECT COUNT(*) FROM sesiones s WHERE s.falla_id = f.id AND s.fue_correcto = 1);\n")
+# El SQL para cargar la base de datos de la app ya NO se genera aqui:
+# este dataset es solo para el analisis de la tesis (ml_model.py). Para la
+# app usa ds/simular_sesiones_app.py, que cubre los 12 equipos.
 
 prec_global = sum(r["fue_correcto"] for r in rows) / len(rows) * 100
 print(f"Dataset generado: {len(rows)} registros")
 print(f"Precision simulada del arbol: {prec_global:.1f}%")
 print(f"CSV guardado en:  {csv_path}")
-print(f"SQL guardado en:  {sql_path}")
