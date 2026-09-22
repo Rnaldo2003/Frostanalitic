@@ -113,6 +113,27 @@ def _arbol_para(equipo):
         return spec  # si la BD falla al calcular probabilidad, servir el árbol crudo
 
 
+# ── Precision real a partir de las sesiones ──────────────────
+# Solo cuentan los diagnosticos que recibieron retroalimentacion
+# (fue_correcto = 1 o 0). Los que nunca se confirmaron no son aciertos
+# ni errores, asi que no deben bajar el porcentaje.
+def _precision(ok, nok):
+    return round(ok / (ok + nok) * 100, 1) if (ok + nok) else None
+
+
+def _resumen_sesiones(columna):
+    """{id: {'total', 'ok', 'nok'}} agrupando las sesiones por `columna`."""
+    from sqlalchemy import func, case
+    filas = (db.session.query(
+                columna,
+                func.count(Sesion.id),
+                func.sum(case((Sesion.fue_correcto == 1, 1), else_=0)),
+                func.sum(case((Sesion.fue_correcto == 0, 1), else_=0)))
+             .group_by(columna).all())
+    return {k: {'total': int(t or 0), 'ok': int(o or 0), 'nok': int(n or 0)}
+            for k, t, o, n in filas if k is not None}
+
+
 # ── Rutas ────────────────────────────────────────────────────
 @app.route('/')
 def home():
@@ -121,7 +142,8 @@ def home():
         tf = Falla.query.count()
         ts = Sesion.query.count()
         ok = Sesion.query.filter_by(fue_correcto=1).count()
-        prec = round(ok/ts*100,1) if ts else 0
+        nok = Sesion.query.filter_by(fue_correcto=0).count()
+        prec = _precision(ok, nok) or 0
     except:
         te=tf=ts=prec=0
     return render_template('index.html',
@@ -151,11 +173,13 @@ def api_equipos():
 def api_fallas():
     try:
         fallas = Falla.query.all()
+        res = _resumen_sesiones(Sesion.falla_id)
+        vacio = {'total': 0, 'ok': 0, 'nok': 0}
         return jsonify([{
             'id':f.id,'nombre':f.nombre,'descripcion':f.descripcion,
             'severidad':f.severidad,'equipos_tag':f.equipos_tag,
-            'veces':f.veces_diagnosticada,
-            'precision': round(f.veces_correcta/f.veces_diagnosticada*100,1) if f.veces_diagnosticada else None
+            'veces': res.get(f.id, vacio)['total'],
+            'precision': _precision(res.get(f.id, vacio)['ok'], res.get(f.id, vacio)['nok'])
         } for f in fallas])
     except Exception as e:
         return jsonify({'error':str(e)}),500
@@ -237,15 +261,25 @@ def api_stats():
         ts = Sesion.query.count()
         ok = Sesion.query.filter_by(fue_correcto=1).count()
         nok = Sesion.query.filter_by(fue_correcto=0).count()
-        fallas = Falla.query.order_by(Falla.veces_diagnosticada.desc()).limit(8).all()
+        nombres_f = {f.id: f.nombre for f in Falla.query.all()}
+        por_falla = _resumen_sesiones(Sesion.falla_id)
+        top = sorted(por_falla.items(), key=lambda kv: kv[1]['total'], reverse=True)[:8]
+        por_eq = _resumen_sesiones(Sesion.equipo_id)
+        vacio = {'total': 0, 'ok': 0, 'nok': 0}
         return jsonify({
             'total_sesiones':ts,'correctas':ok,'incorrectas':nok,
             'sin_feedback':ts-ok-nok,
-            'precision_global': round(ok/ts*100,1) if ts else 0,
+            'precision_global': _precision(ok, nok) or 0,
             'top_fallas':[{
-                'nombre':f.nombre,'veces':f.veces_diagnosticada,
-                'precision': round(f.veces_correcta/f.veces_diagnosticada*100,1) if f.veces_diagnosticada else 0
-            } for f in fallas]
+                'nombre': nombres_f.get(fid, f'Falla {fid}'),
+                'veces': r['total'],
+                'precision': _precision(r['ok'], r['nok'])
+            } for fid, r in top],
+            'por_equipo':[{
+                'nombre': e.nombre,
+                'veces': por_eq.get(e.id, vacio)['total'],
+                'precision': _precision(por_eq.get(e.id, vacio)['ok'], por_eq.get(e.id, vacio)['nok'])
+            } for e in Equipo.query.order_by(Equipo.id).all()]
         })
     except Exception as e:
         return jsonify({'error':str(e)}),500

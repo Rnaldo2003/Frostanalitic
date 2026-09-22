@@ -286,7 +286,7 @@ tbody td{padding:12px;}
   font-family:'Inter',sans-serif;font-size:13px;cursor:pointer;
 }
 .tree-scroll{
-  overflow:auto;background:var(--surf2);
+  overflow:auto;background:var(--surf2);color-scheme:dark;
   border:1px solid var(--border);border-radius:var(--r);
   padding:20px;max-height:calc(100vh - 210px);
 }
@@ -552,7 +552,7 @@ tbody td{padding:12px;}
     <div class="tree-ctrl">
       <select class="tree-sel" id="arbolSel" onchange="renderTree(this.value)"></select>
     </div>
-    <div class="tree-scroll"><svg id="treeSvg" style="display:block;margin:0 auto;"></svg></div>
+    <div class="tree-scroll"><svg id="treeSvg" style="display:block;"></svg></div>
     <div class="tree-legend">
       <span style="color:var(--blue)">■</span> Pregunta &nbsp;
       <span style="color:var(--green)">■</span> Resultado final
@@ -990,53 +990,71 @@ async function loadFallas(){
 }
 
 /* ── ÁRBOL SVG ───────────────────────────────────── */
+// Layout "tidy": cada hoja ocupa una columna y cada pregunta se centra
+// sobre sus hijos, así las ramas nunca se cruzan ni se enciman.
+function wrapLines(txt,max,lines){
+  const words=String(txt||'').split(/\s+/); const out=[]; let cur='';
+  for(const w of words){
+    if((cur+' '+w).trim().length<=max) cur=(cur+' '+w).trim();
+    else { if(cur) out.push(cur); cur=w; }
+  }
+  if(cur) out.push(cur);
+  const cut=l=>l.length>max?l.slice(0,max-1)+'…':l;
+  if(out.length>lines){ out.length=lines; const l=out[lines-1]; out[lines-1]=(l.length>max-1?l.slice(0,max-1):l)+'…'; }
+  return out.map(cut);
+}
 async function renderTree(eq){
   document.getElementById('arbolSel').value=eq;
   let tree; try{ const r=await fetch('/api/tree/'+encodeURIComponent(eq)); tree=await r.json(); }catch{return;}
   const svg=document.getElementById('treeSvg');
-  const NW=170,NH=38,GX=14,GY=72;
-  const nodes=[],links=[]; let nid=0;
-  function walk(node,depth,pid,optText){
-    const id=nid++;
-    nodes.push({id,label:node.pregunta,depth,isQ:true,x:0,y:0});
-    if(pid!==null) links.push({from:pid,to:id,label:optText||''});
+  if(!tree||!tree.pregunta){ svg.setAttribute('width',400); svg.setAttribute('height',60);
+    svg.innerHTML='<text x="10" y="30" fill="#8b95a7" font-size="13" font-family="Inter,sans-serif">Este equipo todavía no tiene árbol.</text>'; return; }
+  const NW=184,NH=50,GX=22,GY=78,PAD=24;
+  function build(node,optText){
+    const n={label:node.pregunta,isQ:true,opt:optText||'',kids:[]};
     (node.opciones||[]).forEach(op=>{
-      if(op.resultado){
-        const rid=nid++;
-        nodes.push({id:rid,label:op.resultado.falla,depth:depth+1,isQ:false,prob:op.resultado.prob,x:0,y:0});
-        links.push({from:id,to:rid,label:op.texto});
-      } else if(op.siguiente) walk(op.siguiente,depth+1,id,op.texto);
+      if(op.resultado) n.kids.push({label:op.resultado.falla,isQ:false,prob:op.resultado.prob,opt:op.texto||'',kids:[]});
+      else if(op.siguiente) n.kids.push(build(op.siguiente,op.texto));
     });
+    return n;
   }
-  walk(tree,0,null,'');
-  const byD={};
-  nodes.forEach(n=>{if(!byD[n.depth])byD[n.depth]=[];byD[n.depth].push(n);});
-  Object.values(byD).forEach(arr=>arr.forEach((n,i)=>{n.x=i*(NW+GX)+NW/2;n.y=40+n.depth*(NH+GY);}));
-  const W=Math.max(...nodes.map(n=>n.x))+NW/2+20;
-  const H=Math.max(...nodes.map(n=>n.y))+NH/2+40;
+  const root=build(tree,'');
+  let col=0, maxDepth=0; const all=[];
+  (function place(n,d){
+    n.depth=d; maxDepth=Math.max(maxDepth,d); all.push(n);
+    if(!n.kids.length){ n.x=PAD+col*(NW+GX)+NW/2; col++; }
+    else { n.kids.forEach(k=>place(k,d+1)); n.x=(n.kids[0].x+n.kids[n.kids.length-1].x)/2; }
+    n.y=PAD+14+d*(NH+GY)+NH/2;
+  })(root,0);
+  const W=PAD*2+col*(NW+GX)-GX, H=PAD*2+14+(maxDepth+1)*(NH+GY)-GY;
   svg.setAttribute('width',W); svg.setAttribute('height',H);
-  let s=`<defs><marker id="mh" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto">
-    <path d="M0,0 L0,7 L7,3.5 z" fill="#2a3040"/></marker></defs>`;
-  links.forEach(l=>{
-    const f=nodes.find(n=>n.id===l.from),t=nodes.find(n=>n.id===l.to);
-    if(!f||!t)return;
-    s+=`<line x1="${f.x}" y1="${f.y+NH/2+2}" x2="${t.x}" y2="${t.y-NH/2-4}"
-      stroke="#2a3040" stroke-width="1.5" marker-end="url(#mh)"/>`;
-    if(l.label) s+=`<text x="${(f.x+t.x)/2}" y="${(f.y+t.y)/2}" text-anchor="middle"
-      font-size="9" fill="#374151" font-family="Inter,sans-serif">${esc(trunc(l.label,20))}</text>`;
+  let links='', pills='', boxes='';
+  all.forEach(n=>n.kids.forEach(k=>{
+    const y1=n.y+NH/2, y2=k.y-NH/2, my=(y1+y2)/2;
+    links+=`<path d="M${n.x},${y1} C${n.x},${my} ${k.x},${my} ${k.x},${y2-3}" fill="none" stroke="#3b4658" stroke-width="1.4" marker-end="url(#mh)"/>`;
+    if(k.opt){
+      const t=trunc(k.opt,30), w=Math.min(NW, t.length*5.7+16), py=y2-24;
+      pills+=`<g><title>${esc(k.opt)}</title>
+        <rect x="${k.x-w/2}" y="${py}" width="${w}" height="17" rx="8.5" fill="#12151d" stroke="#2c3444"/>
+        <text x="${k.x}" y="${py+12}" text-anchor="middle" font-size="10" fill="#a3b0c2" font-family="Inter,sans-serif">${esc(t)}</text></g>`;
+    }
+  }));
+  all.forEach(n=>{
+    const fill=n.isQ?'#1a1f2b':'rgba(52,211,153,.10)';
+    const stroke=n.isQ?'#34405a':'rgba(52,211,153,.45)';
+    const tc=n.isQ?'#a9c3ec':'#5eead4';
+    const lines=wrapLines(n.label,n.isQ?27:22,2);
+    const y0=n.y+4-(lines.length-1)*7;
+    const tx=n.isQ?n.x:n.x-16;
+    boxes+=`<g><title>${esc(n.label)}${n.prob!=null&&!n.isQ?' — '+n.prob+'%':''}</title>
+      <rect x="${n.x-NW/2}" y="${n.y-NH/2}" width="${NW}" height="${NH}" rx="9" fill="${fill}" stroke="${stroke}"/>
+      ${lines.map((l,i)=>`<text x="${tx}" y="${y0+i*14}" text-anchor="middle" font-size="11" fill="${tc}" font-family="Inter,sans-serif" font-weight="500">${esc(l)}</text>`).join('')}
+      ${!n.isQ&&n.prob!=null?`<text x="${n.x+NW/2-8}" y="${n.y+4}" text-anchor="end" font-size="10.5" font-weight="600" fill="#34d399" font-family="Inter,sans-serif">${n.prob}%</text>`:''}
+    </g>`;
   });
-  nodes.forEach(n=>{
-    const fill=n.isQ?'#1c1e28':'rgba(52,211,153,.06)';
-    const stroke=n.isQ?'rgba(255,255,255,.08)':'rgba(52,211,153,.3)';
-    const tc=n.isQ?'#6b93c8':'#34d399';
-    s+=`<rect x="${n.x-NW/2}" y="${n.y-NH/2}" width="${NW}" height="${NH}" rx="8"
-      fill="${fill}" stroke="${stroke}" stroke-width="1"/>
-    <text x="${n.x}" y="${n.y+4}" text-anchor="middle" font-size="10"
-      fill="${tc}" font-family="Inter,sans-serif" font-weight="500">${esc(trunc(n.label,22))}</text>`;
-    if(!n.isQ&&n.prob) s+=`<text x="${n.x}" y="${n.y-NH/2-5}" text-anchor="middle"
-      font-size="9" fill="#374151" font-family="Inter,sans-serif">${n.prob}%</text>`;
-  });
-  svg.innerHTML=s;
+  svg.innerHTML=`<defs><marker id="mh" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+    <path d="M0,0 L0,8 L8,4 z" fill="#3b4658"/></marker></defs>${links}${pills}${boxes}`;
+  const sc=svg.parentElement; if(sc) sc.scrollLeft=Math.max(0,root.x-sc.clientWidth/2);
 }
 
 /* ── STATS ───────────────────────────────────────── */
@@ -1046,16 +1064,13 @@ async function loadStats(){
   try{
     const r=await fetch('/api/stats'); const d=await r.json();
     if(d.error) throw new Error(d.error);
-    const bars=d.top_fallas.map(f=>`
+    const barra=(nombre,veces,prec,cls)=>`
       <div class="bar-wrap">
-        <div class="bar-lbl"><span>${trunc(f.nombre,28)}</span><span class="bar-val">${f.veces} · ${f.precision}%</span></div>
-        <div class="bar-bg"><div class="bar-fill bf-blue" style="width:${Math.min(f.precision,100)}%"></div></div>
-      </div>`).join('');
-    const covBars=['Refrigerador','Congelador','Aire Acondicionado','Enfriador Comercial','Cuarto Frío']
-      .map((e,i)=>`<div class="bar-wrap">
-        <div class="bar-lbl"><span>${e}</span><span class="bar-val">${[95,82,90,80,85][i]}%</span></div>
-        <div class="bar-bg"><div class="bar-fill bf-teal" style="width:${[95,82,90,80,85][i]}%"></div></div>
-      </div>`).join('');
+        <div class="bar-lbl"><span title="${escAttr(nombre)}">${esc(trunc(nombre,28))}</span><span class="bar-val">${veces} diag. · ${prec!=null?prec+'%':'sin confirmar'}</span></div>
+        <div class="bar-bg"><div class="bar-fill ${cls}" style="width:${prec!=null?Math.min(prec,100):0}%"></div></div>
+      </div>`;
+    const bars=d.top_fallas.map(f=>barra(f.nombre,f.veces,f.precision,'bf-blue')).join('');
+    const covBars=(d.por_equipo||[]).map(e=>barra(e.nombre,e.veces,e.precision,'bf-teal')).join('');
     div.innerHTML=`
       <div class="s2-row">
         <div class="s2"><div class="s2-num" style="color:var(--blue)">${d.total_sesiones}</div><div class="s2-lbl">Diagnósticos</div></div>
@@ -1065,7 +1080,7 @@ async function loadStats(){
       </div>
       <div class="stats2">
         <div class="card"><div class="card-title">Fallas más diagnosticadas</div>${bars||'<p class="no-data">Sin datos.</p>'}</div>
-        <div class="card"><div class="card-title">Cobertura por equipo</div>${covBars}</div>
+        <div class="card"><div class="card-title">Precisión por equipo</div>${covBars||'<p class="no-data">Sin datos.</p>'}</div>
       </div>`;
     // Gráficas del módulo DS
     gg.style.display='grid';
