@@ -1,6 +1,6 @@
 """
 simulate_data.py — FrostAnalitic
-Genera dataset sintetico de 600 diagnosticos.
+Genera dataset sintetico de diagnosticos (N_REGISTROS).
 Guarda los archivos en la misma carpeta ds/ donde esta este script.
 """
 import random, json, csv, os
@@ -60,16 +60,57 @@ PREC.update({"filtros_sucios":0.97,"puertas_mal":0.95,"gotea":0.89,"gotea_antigu
 
 EQ_MAP = {"Refrigerador":1,"Congelador":2,"Aire Acondicionado":3,"Enfriador Comercial":4,"Cuarto Frio":5}
 FALLAS_IDS = list(range(1, 19))
+
+# Fallas que puede tener cada equipo (las que sus sintomas pueden indicar)
+FALLAS_EQUIPO = {eq: sorted({GT[s] for s in sints}) for eq, sints in SINTOMAS.items()}
+
+# Contexto que cambia la falla mas probable en ciertos sintomas. Esto es lo
+# que el arbol de reglas NO mira y un modelo de ML si puede aprender.
+#   (condicion, sintomas afectados, falla que se vuelve probable, probabilidad)
+REGLAS_CONTEXTO = [
+    # Equipo viejo + ruido -> rodamientos gastados
+    (lambda ant, t: ant >= 12,
+     {"ruido_vibracion", "ruido_zumbido", "ruido_exterior", "ruido_interior"}, 18, 0.60),
+    # Equipo viejo + enfria poco sin causa obvia -> compresor desgastado
+    (lambda ant, t: ant >= 12,
+     {"escarcha_poca_burbujeo_no", "filtros_limpios_presion_normal",
+      "comp_func_temp_mayor_0", "trabaja_sin_parar_filt_no"}, 3, 0.55),
+    # Calor extremo + enfria poco -> condensador sucio / saturado
+    (lambda ant, t: t >= 33,
+     {"filtros_limpios_presion_baja", "comp_func_temp_0_10",
+      "comp_func_cond_limpio", "cicla_hielo_no"}, 8, 0.60),
+]
+
+N_REGISTROS = 2000   # antes 600: con mas registros ninguna falla queda con 2 muestras
+
+
+def elegir_falla_real(eq, sint, antiguedad, temp):
+    """La falla real ya NO es una funcion fija del sintoma: en ciertos
+    contextos domina otra falla, y el resto del tiempo el sintoma acierta
+    con probabilidad PREC[sint] (si no, es ruido aleatorio)."""
+    principal = GT[sint]
+    for cond, sintomas, falla, prob in REGLAS_CONTEXTO:
+        if sint in sintomas and cond(antiguedad, temp) and random.random() < prob:
+            return falla
+    if random.random() < PREC.get(sint, 0.82):
+        return principal
+    otras = [f for f in FALLAS_EQUIPO[eq] if f != principal] or \
+            [f for f in FALLAS_IDS if f != principal]
+    return random.choice(otras)
+
+
 rows = []
 start = datetime(2024, 1, 1)
 
-for i in range(600):
+for i in range(N_REGISTROS):
     eq    = random.choice(list(SINTOMAS.keys()))
     sint  = random.choice(SINTOMAS[eq])
-    falla_real = GT[sint]
+    antiguedad = random.choices(range(0, 21), weights=[max(1, 12 - abs(a - 6)) for a in range(21)])[0]
+    temp  = round(random.gauss(29, 4), 1)
+    falla_diag = GT[sint]                      # lo que responde el arbol de reglas
+    falla_real = elegir_falla_real(eq, sint, antiguedad, temp)
+    correcto   = 1 if falla_real == falla_diag else 0
     prec  = PREC.get(sint, 0.82)
-    correcto   = 1 if random.random() < prec else 0
-    falla_diag = falla_real if correcto else random.choice([f for f in FALLAS_IDS if f != falla_real])
     nivel = random.choices(["normal","tecnico"], weights=[0.7, 0.3])[0]
     fecha = start + timedelta(days=random.randint(0, 400), hours=random.randint(7, 20))
     rows.append({
@@ -77,6 +118,8 @@ for i in range(600):
         "equipo":               eq,
         "equipo_id":            EQ_MAP[eq],
         "sintoma":              sint,
+        "antiguedad_anios":     antiguedad,
+        "temp_ambiente":        temp,
         "falla_diagnosticada_id": falla_diag,
         "falla_correcta_id":    falla_real,
         "fue_correcto":         correcto,
@@ -95,7 +138,7 @@ with open(csv_path, "w", newline="", encoding="utf-8") as f:
 # ── Guardar SQL para MySQL Workbench ──────────────────────────
 sql_path = os.path.join(BASE, "insert_sesiones.sql")
 with open(sql_path, "w", encoding="utf-8") as f:
-    f.write("USE frostanalitic;\n-- 600 sesiones simuladas de diagnostico\n\n")
+    f.write(f"USE frostanalitic;\n-- {len(rows)} sesiones simuladas de diagnostico\n\n")
     for r in rows:
         camino = json.dumps({"sintoma": r["sintoma"]}).replace("'", "''")
         fr     = r["falla_correcta_id"] if not r["fue_correcto"] else "NULL"

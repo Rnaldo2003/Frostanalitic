@@ -16,8 +16,7 @@ warnings.filterwarnings('ignore')
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.model_selection import train_test_split, cross_val_score, StratifiedKFold
 from sklearn.metrics import accuracy_score, f1_score, classification_report, confusion_matrix
 
 # ── Rutas relativas (funciona en cualquier PC) ────────────────
@@ -32,7 +31,8 @@ FALLA_NOMBRES = {
     7:"Vent. condensador", 8:"Condensador sucio",   9:"Drenaje obstruido",
    10:"Empaque puerta",   11:"Deshielo defect.",   12:"Tarjeta control",
    13:"Filtros sucios",   14:"Aislamiento",        15:"Sensor temperatura",
-   16:"Resist. anti-vaho",17:"Falla electrica",    18:"Rodamientos"
+   16:"Resist. anti-vaho",17:"Falla electrica",    18:"Rodamientos",
+    0:"Otras (poco frec.)"
 }
 
 print("=" * 55)
@@ -50,29 +50,47 @@ print(f"\n Datos cargados: {len(df)} registros")
 print(f"\nDistribucion por equipo:")
 print(df["equipo"].value_counts().to_string())
 
-prec_actual = df["fue_correcto"].mean() * 100
-print(f"\nPrecision actual del arbol de reglas: {prec_actual:.1f}%")
+print(f"\nPrecision global del arbol de reglas: {df['fue_correcto'].mean()*100:.1f}%")
 
 # ── 2. Features ───────────────────────────────────────────────
-le_eq   = LabelEncoder()
-le_sint = LabelEncoder()
-df["equipo_enc"]  = le_eq.fit_transform(df["equipo"])
-df["sintoma_enc"] = le_sint.fit_transform(df["sintoma"])
+# One-hot en vez de LabelEncoder: equipo y sintoma son categorias, no
+# numeros ordenados. "probabilidad" se quita porque es solo la confianza
+# fija del arbol para ese sintoma (no aporta informacion nueva).
+MIN_MUESTRAS = 20   # fallas con menos registros se agrupan como "Otras"
 
-X = df[["equipo_enc", "sintoma_enc", "probabilidad"]].values
-y = df["falla_correcta_id"].values
+conteo = df["falla_correcta_id"].value_counts()
+raras  = conteo[conteo < MIN_MUESTRAS]
+if len(raras):
+    print(f"\nAviso: {len(raras)} falla(s) con menos de {MIN_MUESTRAS} registros "
+          f"se agrupan como 'Otras': "
+          + ", ".join(f"{FALLA_NOMBRES.get(i, i)} ({n})" for i, n in raras.items()))
+df["objetivo"] = df["falla_correcta_id"].where(~df["falla_correcta_id"].isin(raras.index), 0)
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.25, random_state=42, stratify=y
+cols_num = [c for c in ("antiguedad_anios", "temp_ambiente") if c in df.columns]
+X_df = pd.get_dummies(df[["equipo", "sintoma"]].astype(str), dtype=int)
+X_df = pd.concat([X_df, df[cols_num]], axis=1)
+columnas = list(X_df.columns)
+X = X_df.values
+y = df["objetivo"].values
+
+idx_train, idx_test = train_test_split(
+    np.arange(len(df)), test_size=0.25, random_state=42, stratify=y
 )
+X_train, X_test = X[idx_train], X[idx_test]
+y_train, y_test = y[idx_train], y[idx_test]
 print(f"\nTrain: {len(X_train)} | Test: {len(X_test)}")
+
+# Precision del arbol de reglas medida sobre el MISMO conjunto de prueba
+prec_actual = df["fue_correcto"].iloc[idx_test].mean() * 100
+print(f"Precision del arbol de reglas en test: {prec_actual:.1f}%")
 
 # ── 3. Entrenar modelos ───────────────────────────────────────
 modelos = {
-    "Arbol de Decision": DecisionTreeClassifier(max_depth=8, random_state=42),
-    "Random Forest":     RandomForestClassifier(n_estimators=100, random_state=42),
+    "Arbol de Decision": DecisionTreeClassifier(min_samples_leaf=3, random_state=42),
+    "Random Forest":     RandomForestClassifier(n_estimators=200, min_samples_leaf=3, random_state=42),
     "Naive Bayes":       GaussianNB(),
 }
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
 resultados = {}
 print("\nEntrenando modelos...")
@@ -81,20 +99,21 @@ for nombre, modelo in modelos.items():
     y_pred = modelo.predict(X_test)
     acc = accuracy_score(y_test, y_pred) * 100
     f1  = f1_score(y_test, y_pred, average="weighted", zero_division=0) * 100
-    cv  = cross_val_score(modelo, X, y, cv=5, scoring="accuracy").mean() * 100
-    resultados[nombre] = {"modelo": modelo, "acc": acc, "f1": f1, "cv": cv, "pred": y_pred}
-    print(f"  {nombre:<22}  Acc={acc:.1f}%  F1={f1:.1f}%  CV={cv:.1f}%")
+    f1m = f1_score(y_test, y_pred, average="macro", zero_division=0) * 100
+    cv  = cross_val_score(modelo, X, y, cv=skf, scoring="accuracy").mean() * 100
+    resultados[nombre] = {"modelo": modelo, "acc": acc, "f1": f1, "f1m": f1m, "cv": cv, "pred": y_pred}
+    print(f"  {nombre:<22}  Acc={acc:.1f}%  F1={f1:.1f}%  F1-macro={f1m:.1f}%  CV={cv:.1f}%")
 
-mejor_nombre = max(resultados, key=lambda k: resultados[k]["acc"])
+mejor_nombre = max(resultados, key=lambda k: resultados[k]["cv"])
 mejor = resultados[mejor_nombre]
 mejora = mejor["acc"] - prec_actual
-print(f"\nMejor modelo: {mejor_nombre} ({mejor['acc']:.1f}%)")
-print(f"Mejora vs arbol de reglas: +{mejora:.1f}%")
+print(f"\nMejor modelo (por validacion cruzada): {mejor_nombre} ({mejor['acc']:.1f}%)")
+print(f"Diferencia vs arbol de reglas: {mejora:+.1f} puntos")
 
 # Guardar modelo
 with open(os.path.join(OUT, "frost_model.pkl"), "wb") as f:
-    pickle.dump({"modelo": mejor["modelo"], "le_eq": le_eq,
-                 "le_sint": le_sint, "nombre": mejor_nombre}, f)
+    pickle.dump({"modelo": mejor["modelo"], "columnas": columnas,
+                 "nombre": mejor_nombre}, f)
 print(f"\nModelo guardado: ds/output/frost_model.pkl")
 
 # ── 4. Grafica 1 — Comparacion de modelos ────────────────────
@@ -104,7 +123,7 @@ nombres = ["Arbol actual"] + list(resultados.keys())
 accs    = [prec_actual]    + [resultados[k]["acc"] for k in resultados]
 colores = ["#ffd700", "#00d4ff", "#00ff88", "#ff8800"]
 bars = ax.bar(nombres, accs, color=colores, width=0.55, zorder=3)
-ax.set_ylim(50, 105)
+ax.set_ylim(0, 105)
 ax.set_ylabel("Precision (%)", color="#8aacbe", fontsize=11)
 ax.set_title("Comparacion de Modelos — FrostAnalitic",
              color="#e8f0f8", fontsize=13, fontweight="bold", pad=14)
@@ -129,8 +148,8 @@ fig.patch.set_facecolor("#040608"); ax.set_facecolor("#080c10")
 ax.fill_between(df_s["sesion_id"], df_s["prec_movil"], alpha=0.15, color="#00d4ff")
 ax.plot(df_s["sesion_id"], df_s["prec_movil"], color="#00d4ff", linewidth=2,
         label="Precision (ventana 30 diag.)")
-ax.axhline(prec_actual, color="#ffd700", linewidth=1.2, linestyle="--",
-           label=f"Media global {prec_actual:.1f}%")
+ax.axhline(df["fue_correcto"].mean()*100, color="#ffd700", linewidth=1.2, linestyle="--",
+           label=f"Media global {df['fue_correcto'].mean()*100:.1f}%")
 ax.set_xlabel("Numero de diagnostico", color="#8aacbe")
 ax.set_ylabel("Precision (%)", color="#8aacbe")
 ax.set_title("Evolucion de la Precision — El Sistema Aprende con el Uso",
@@ -194,15 +213,18 @@ with open(rep_path, "w", encoding="utf-8") as f:
     f.write(f"Dataset: {len(df)} diagnosticos simulados\n")
     f.write(f"Equipos: {df['equipo'].nunique()} tipos\n")
     f.write(f"Fallas distintas: {df['falla_correcta_id'].nunique()}\n\n")
-    f.write(f"Precision arbol de reglas actual: {prec_actual:.1f}%\n\n")
+    f.write(f"Nota: datos SINTETICOS generados por ds/simulate_data.py\n")
+    f.write(f"Fallas con < {MIN_MUESTRAS} registros agrupadas como 'Otras': {len(raras)}\n\n")
+    f.write(f"Precision arbol de reglas (mismo test): {prec_actual:.1f}%\n\n")
     f.write("Resultados por modelo:\n")
     for nombre, r in resultados.items():
         f.write(f"\n  {nombre}:\n")
         f.write(f"    Accuracy:            {r['acc']:.1f}%\n")
         f.write(f"    F1-Score (weighted): {r['f1']:.1f}%\n")
+        f.write(f"    F1-Score (macro):    {r['f1m']:.1f}%\n")
         f.write(f"    Cross-Val (5-fold):  {r['cv']:.1f}%\n")
     f.write(f"\nMejor modelo: {mejor_nombre}\n")
-    f.write(f"Mejora sobre arbol de reglas: +{mejora:.1f}%\n\n")
+    f.write(f"Diferencia vs arbol de reglas: {mejora:+.1f} puntos\n\n")
     labels_rep   = sorted(set(y_test))
     target_names = [FALLA_NOMBRES.get(l, f"Falla {l}") for l in labels_rep]
     f.write(classification_report(y_test, y_pred_best,
@@ -214,6 +236,6 @@ print("  RESUMEN PARA TU TESIS:")
 print(f"  Arbol de reglas:  {prec_actual:.1f}%")
 for n, r in resultados.items():
     print(f"  {n:<24} {r['acc']:.1f}%")
-print(f"  Mejora obtenida:  +{mejora:.1f}%")
+print(f"  Diferencia:       {mejora:+.1f} puntos")
 print(f"\n  Graficas en: {OUT}")
 print("=" * 55)
